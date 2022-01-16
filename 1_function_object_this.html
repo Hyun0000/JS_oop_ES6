@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 'use strict'; // strict mode
+        // 최상단에 작성
+        // JS를 실행할 때 '엄격하게 실행' 한다는 의미이다.
+
+        // 'use strict'가 없으면 (x = 5)와 같이 var, let, const 같은 키워드가 없어도 변수 선언 및 사용이 가능
+        // 하지만 'use strict'로 인해 (x = 5)와 같이 작성하면 오류가 난다.
+        // x = 5; ==> 'use strict'로 인해 오류가 난다.
+        var x = 5;
+        
+
+// ========================================================================================================
+        // 1. window
+        console.log(this);
+
+        function thisFunc() {
+            console.log(this);
+            // 'use strict'를 쓰면 window object가 아니라 undefined가 뜬다.
+            // strict mode + 일반 함수 내에서 쓰면 undefined
+        }
+
+        thisFunc();
+        window.thisFunc();
+        // thisFunc() 와 window.thisFunc()은 같은 의미이다.
+
+// ========================================================================================================
+    console.log("============================================");
+        // 2. object
+        var thisObject = {
+            data : 'Kim',
+            func : function () {
+                console.log(this);
+            }
+        }
+
+        thisObject.func();
+
+        // 응용 1
+        // object안의 object안의 method안의 this
+        var thisObj = {
+            data : {
+                func : function() {
+                    console.log(this);
+                }
+            }
+        }
+
+        thisObj.data.func(); // 결과값 : {func: ƒ}
+        // 최상위 object가 아니라 해당 this를 담고있는 method가 담겨있는 object가 this이다.
+        // this = data object = thisObj.data
+
+
+        console.log(this);
+
+        // 응용 2
+        var arrowThisObj = {
+            data : {
+                func : () => {
+                    console.log(this);
+                }
+            }
+        }
+
+        arrowThisObj.data.func();
+// ========================================================================================================
+        // 3. 
+
+// ========================================================================================================
+        // 4. 
+    </script>
+</body>
+</html>
