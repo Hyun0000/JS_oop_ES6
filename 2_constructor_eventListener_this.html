@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tqtqt</title>
+</head>
+<body>
+    <button id="btn">버튼</button>
+
+    <script>
+        // 3. constructor : 새로 생성되는 object 생성기계
+        // function을 만들 때 안에서 this를 사용 ==> object 생성기계가 된다.
+        // this = 새로 생성되는 object = instance
+        function objectGenerator() { // 이 function이 object 생성기계이다.
+            this.name = "kim";
+            this.print = function () {
+                console.log(123);
+                return 0;
+            }
+        }
+
+        // 기계에서 object 생성하는 방법
+        var obj = new objectGenerator(); // instance 생성
+        console.log(obj);
+        console.log(obj.name);
+        console.log(obj.print());
+        console.log(typeof obj);
+// ========================================================================================================================
+        console.log("======================================");
+
+        // 4. 이벤트 리스너
+        document.getElementById('btn').addEventListener('click', function (e) { // e를 paramter로 설정해야한다.
+            // this = e.currentTarget ==> eventListener 안에서의 this = e.currentTarget
+            // e.currentTarget = 지금 이벤트가 동작하고 있는 곳
+            // this = e.currentTarget = <button id="btn">버튼</button>
+            console.log("==================eventListener 안==================");
+            console.log(this);
+            console.log(e.currentTarget);
+            console.log(e.target);
+
+            // case1
+            var arr = [1, 2, 3]
+            arr.forEach(function (e) { // callback function을 인자로 추가
+                // function안에 들어가는 function = callback function / cf) forEach도 함수이다.
+
+                console.log(e); // arr의 요소(1, 2, 3)가 출력된다.
+                console.log(this); // window object가 출력된다.
+
+            /*
+                - 여기서의 this는 eventListener안의 this도 아니고, object 생성기계인 this도 아니다.
+                - 따라서 여기서의 this는 해당 this를 포함하고 있는 function (e) {...}의 주인님 object(=window object)이다.
+                - object 내의 method 안에서 쓰이는 this = 해당 method를 가지고 있는 주인님 object
+
+                (자세히)
+                - function (e) {...}만 떼어놓고 보면 eventListener 안에 있는 것도 아니고 object 생성기계로 쓰인것도 아니다.
+                - 그저 forEach() 함수의 callback function으로만 쓰였다. 즉, 일반함수로만 쓰였다는 것이다.(전역함수이다.)
+                - 일반함수에서의 this = 일반함수를 포함하고 있는 주인님 object(= window object)
+                - 즉, 함수가 쓰인 위치에 따라 this 값이 변하는 것이다.
+            */
+            })
+        })
+// ========================================================================================================================
+        // case2 : object 내에서 callback function을 쓴다면
+        var obj2 = {
+            names : ['k', 'p', 'c'],
+            func : function() {
+                console.log(this); // {names: Array(3), func: ƒ}
+                // 여기서의 this는 obj2 {...} 이다.
+                // obj2 {...} = 해당 this를 가지고 있는 mehtod의 주인님 object
+                obj2.names.forEach(function(element) {
+                    console.log(this);
+                    // 여기서의 this는 window object이다.
+                /*
+                    - case1과 동일하게 function(element) {...} ==> 이 함수만 보면
+                    - 여기서의 this는 eventListener안의 this도 아니고, object 생성기계인 this도 아니다.
+                    - 그저 근본없는 단순 일반함수(전역함수)이다.
+                    - 따라서 (여기서의 this) = (this를 감싸고 있는 method의 주인님 object)
+                */
+                })
+            }
+        }
+
+        obj2.func(); // window object가 출력된다.
+// ========================================================================================================================
+        console.log("======================================");
+
+        // case3 : object 내에서 callback function을 arrow function으로 쓴다면
+        var obj3 = {
+            names : ['k', 'p', 'c'],
+            func : function() {
+                console.log(this); // {names: Array(3), func: ƒ}
+                obj3.names.forEach(() => {
+                    console.log(this); // obj3 {...} 출력 = {names: Array(3), func: ƒ}
+                    // arrow function은 this 값을 새로 생성하지 않고 상위의 this 값을 물려받는다.(arrow function의 특징)
+                })
+            }
+        }
+
+        obj3.func();
+    </script>
+</body>
+</html>
