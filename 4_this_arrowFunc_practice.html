@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn">버튼이다.</button>
+    <script>
+        // 1.
+        var obj = {
+            name : "마이콜",
+            sayHi : function() {
+                console.log("안녕 나는 " + this.name);
+            }
+        };
+        obj.sayHi();
+
+        // 2.
+        var obj2 = {
+            data : [1,2,3,4,5]
+        };
+
+        obj2.sum = function () { // object 밖에서 object의 function 만들기
+            var sumNun = 0;
+            this.data.forEach(function(a) { // this = 함수의 주인님
+                sumNun += a;
+            })
+            console.log(sumNun);
+        };
+        obj2.sum();
+
+        // 3. setTimeout : 특정 코드나 함수를 n초 후에 실행하고 싶을 때 사용하는 함수
+        // ex) setTimeout(function(){ console.log('안녕') }, 1000);
+
+        // 이렇게도 setTimeout 사용 가능
+        // function print(){ console.log('바이'); };
+        // setTimeout(print, 1000);
+
+        // 문제 : 버튼을 누르면 this.innerHTML을 1초 후에 출력하기
+        document.getElementById("btn").addEventListener('click', function() {
+            console.log(this);
+            
+            setTimeout(() => {console.log(this.innerHTML);}, 1000);
+            // arrow function 안의 this = <button id="btn">버튼이다.</button>
+
+            setTimeout(function() {
+                console.log(this.innerHTML);
+                console.log(this);} , 1000);
+            // 위 코드의 this는 callback function(근본 없는 일반함수) 속 this이므로 window object가 된다.
+
+            // 옛날 방식
+            var me = this;
+            setTimeout(() => {console.log(me.innerHTML);}, 1000);
+        });
+    </script>
+</body>
+</html>
