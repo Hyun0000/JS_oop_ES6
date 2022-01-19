@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn">버튼</button>
+
+    <script>
+        // function을 만드는 여러가지 방법
+
+        // 1.
+        function func1() { console.log(123); }
+        func1();
+
+        // 2.
+        var func2 = function () { console.log(456); }
+        func2();
+
+        // 3. ES6의 arrow function(function 키워드 대신에 '=>' 을 사용)
+        var func3 = () => { console.log(789); }
+        func3();
+
+        // arrow function에서도 parameter를 사용할 수 있다.(입출력 가능)
+        var func4 = (a) => { console.log(a + 10); }
+        func4(5);
+
+        // arrow function에서는 소괄호와 중괄호를 생략할 수 있다.
+        // 1. parameter가 1개면 소괄호 생략가능
+        // 2. 코드가 한줄이면 중괄호 생략가능(return도 생략해버린다.)
+        var func5 = a => a + 20;
+        console.log(func5(5));
+        
+
+        console.log("======================================");
+        // 4분 40초
+
+        // 예시
+        // 1. forEach callback function
+        [1,2,3,4].forEach( (a) => {console.log(a);} );
+        console.log("======================================");
+        [1,2,3,4].forEach( a => console.log(a) );
+
+        // 
+        document.getElementById('btn').addEventListener('click',
+        e => {
+            console.log("======================================");
+            console.log(this);
+            // arrow function은 this 값을 새로 만들지 않고(변경시키지 않고) 상위의 this값을 물려받기 때문에
+            // 여기서의 this는 <button id="btn">버튼</button>이 아니라 window object가 된다.
+
+            // arrow function도 쓰고 싶고 <button id="btn">버튼</button>도 쓰고 싶으면
+            // 그냥 e.currentTarget을 쓰면 된다.
+            console.log(e.currentTarget);
+            console.log(e.target);
+
+        })
+
+
+        // 
+        console.log("======================================");
+        var obj = {
+            func : () => {
+                console.log(this);
+                // 여기서의 this도 새로 재정의 되는게 아니라 상위의 this값(바깥의 this 값)을 물려받기 때문에
+                // window object가 된다.
+            }
+        }
+        obj.func();
+    </script>
+</body>
+</html>
