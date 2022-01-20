@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        
+        // const로 object를 만들었을 때
+        const obj = {
+            name : "kim"
+        }
+        console.log(obj); // {name: 'kim'}
+
+        obj.name = "Park"; // obj의 name 값을 '재할당'
+        // 위의 코드는 가능하다. 오류가 나지 않는다.
+        // 즉, const를 사용해도 'object 안에 있는 내부 값을 변경하는 것이 가능'하다는 것이다.
+        // 변수 '안에' 있는 값을 '변경'했을 뿐이지 obj라는 변수 자체를 '재할당' 한 것이 아니기 때문이다.
+        // (obj = new Array(); 처럼 const 변수 자체를 재할당 한것이 아니라는 것이다. 안의 값을 바꾸는 것은 자유이다.)
+
+        console.log(obj); // {name: 'Park'}
+        
+        // 완전히 변경 불가능한 object를 만들고 싶을때 ==> Object.freeze()
+        const obj2 = {
+            name : "Lee"
+        }
+        Object.freeze(obj2); // 수정불가능한 object가 됐다.
+
+        obj2.name = "choi";
+        // freeze한 object의 값을 변경하려고 시도해도 오류 자체는 나지 않는다.
+        // 값만 원래 값 그대로 찍힐뿐이다. 단, 'use strict'를 쓰면 오류가 난다.
+        // freeze가 object 내의 object까지 freeze 해주지는 않는다.
+
+        console.log(obj2); // {name: 'Lee'}
+    </script>
+</body>
+</html>
