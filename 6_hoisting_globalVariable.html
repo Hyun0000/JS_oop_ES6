@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 아래의 상황은 let과 const로 하면 되지 않는다.
+
+        // (1)
+        // var age; ==> '선언' 부분을 강제로 맨위로 끌어올린다.
+        // 변수를 만나면 변수의 '선언' 부분을 강제로 맨위로 끌어올린다.
+
+        console.log(age); // undefined 출력
+        // undefined : 변수를 선언만 하고 값을 할당하지 않았을 때 뜨는 '자료형'
+        // 즉, 어쨌든 오류가 나지 않는다는 말이다.
+
+        var age = 30; // ==> 할당은 이곳에서
+        // 위와 같이 변수를 초기화(선언&대입을 동시에) 했을때 Javascript는 다음과 같이 해석한다.
+        // (var age = 30)에서 변수 선언 부분을 맨 위로 끌어올린다.  ==>  (1)번 부분 참고
+        // age = 30; ==> 할당은 원래 (var age = 30)가 선언된 곳에서 한다.
+        // JS의 Hoisting으로 인해 변수를 위와 같이 해석한다.
+
+        console.log(age); // 30 출력
+
+// ==================================================================================================
+        func1();
+
+        // 함수선언도 Hoisting이 일어난다.
+        function func1() { // 해당 함수 전체가 상단으로 끌어올려진다고 생각하면 된다.
+            console.log(123);
+        }
+
+        // func2(); // 이건 안 된다.
+        var func2 = function() {
+            console.log("박");
+        }
+// ==================================================================================================
+        // 전역 변수는 아래의 2가지 방법으로 모두 만들 수 있다.
+        var key = 1;
+        window.key2 = 2; // window로 전역변수 만들기
+
+        console.log(key);
+        console.log(key2);
+
+        if(true) {
+            let a = 1;
+            var b = 2;
+            if(true) {
+                let b = 3;
+            }
+            console.log(b); // (var b = 2)가 출력된다.
+        }
+    </script>
+</body>
+</html>
