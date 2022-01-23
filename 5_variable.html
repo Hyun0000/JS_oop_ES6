@@ -35,6 +35,30 @@
         // freeze가 object 내의 object까지 freeze 해주지는 않는다.
 
         console.log(obj2); // {name: 'Lee'}
+
+    </script>
+
+    <script>
+        function test() {
+            var a = 10;
+
+            function innerTest() {
+                var a = 20;
+                console.log(a); // 20
+            }
+                console.log(a) // 10
+        }
+            // console.log(a); // Uncaught ReferenceError: a is not defined
+
+        {
+            let a = 10
+            {
+                let a = 20
+                console.log(a) // 20
+            }
+            console.log(a) // 10
+        }
+            console.log(a) // ReferenceError: a is not defined
     </script>
 </body>
 </html>
