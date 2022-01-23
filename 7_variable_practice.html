@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="display : none">모달창0</div>
+    <div style="display : none">모달창1</div>
+    <div style="display : none">모달창2</div>
+
+    <button>버튼0</button>
+    <button>버튼1</button>
+    <button>버튼2</button>
+    <script>
+        console.log("========== 1번 문제 ========");
+
+        // 1. function 실행을 function 선언 전에 해도 되는가? 함수선언문
+        
+        func1();                // 얘 자체는 문제없다.
+
+        function func1() {      // 함수선언문, hoisting 된다.
+                                // let val;  ==>  이거 자체는 hoisting 되는게 맞다.
+                                // 단, var와 다르게 undefined가 자동으로 할당되지 되지 않는다.
+                                // let, const는 hoisting시 undefined가 자동으로 할당 되지 않는다.(그냥 빈 공간이 된다.)
+
+            console.log(val);   // Uncaught ReferenceError: Cannot access 'val' before initialization
+            let val = "Hello";  // TDZ에 갇힌다.(uninitialized 되었다.)
+        }
+
+        // 결과값 : Uncaught ReferenceError: Cannot access 'val' before initialization
+    </script>
+// =======================================================================================================================
+    <script>
+        console.log("========== 2번 문제 ========");
+        // 2. function 실행을 function 선언 전에 해도 되는가? 함수표현식
+
+                                    // var func2; ==> 이렇게 변수의 선언 부분만 hoisting 된다고 생각하면 된다.
+                                    // 선언만 hoisting 되는 것이지 할당은 그 자리 그대로 있는다.
+        func2();                    // Uncaught TypeError: func2 is not a function
+
+        var func2 = function() {    // 함수표현식
+            console.log(val);
+            var val = 'Hello!';
+        } 
+
+        // 결과값 : Uncaught TypeError: func2 is not a function
+    </script>
+// =======================================================================================================================
+    <script>
+        console.log("========== 3번 문제 ========");
+        // 3. 무엇이 출력될까?
+
+                                    // var func3; ==> 이렇게 변수의 선언 부분만 hoisting된다고 생각하면 된다.
+                                    // hoisting은 선언만 되는 것이지 할당은 그 자리 그대로 있는다.
+        let a = 1;
+        var func3 = function () {   // 함수표현식
+            a = 2;
+        }
+
+        console.log(a);    // 결과값 : 1 (함수를 만들기만 했지 실행을 하지 않았다.)
+        func3();           // 함수 실행
+        console.log(a);    // 결과값 : 2
+    </script>
+// =======================================================================================================================
+    <script>
+        console.log("========== 4번 문제 ========");
+        // 4. 무엇이 출력될까?
+
+        let aa = 1;             // 전역변수는 맞지만 window object에 추가되지는 않는다.
+        var bb = 2;             // 전역변수, (var bb = 2)와 (window.bb = 4)은 동일하다. window object에 bb 변수가 추가된다.
+        window.aa = 3;          // 전역변수    
+        window.bb = 4;          // 전역변수, (var bb = 2)와 (window.bb = 4)은 동일하다. window object에 bb 변수가 재선언&재할당 됐다.
+                                // (aa를 let 변수로 1을 할당, 글로벌 변수로 3을 할당)
+
+        console.log(aa);        // 1
+        // (let aa = 1)와 (window.aa = 3) 중 가까이 있는 aa 값(= 1)을 참조한 것이다.
+        // 현재 (let aa = 1)와 (window.aa = 3)로 변수의 이름이 동일한데
+        // 이럴 경우 조금 더 범위가 작고 가까운 (aa = 1)을 참조해서 사용한다.
+        // JS에서 변수를 사용할 때 참조할만한 변수가 주변에 없으면 (좁은 범위 ~ 넓은 범위) 순으로 상위 중괄호 참조 범위를 확대한다.
+
+        console.log(bb);        // 4
+        console.log(aa + bb);   // 결과값 : 5 (aa = 1 / bb = 4)
+    </script>
+// =======================================================================================================================
+    <script>
+        console.log("========== 5번 문제 ========");
+        // 5. setTimeout 5회 반복시키기
+
+        // for (var i = 0; i < 5; i++) {
+        //     setTimeout(function() { console.log(i); }, i*1000 );
+        // }
+
+        // 위와 같이 코드를 짜면 (1,2,3...)이 아니라 5초 동안 '5'가 다섯번 출력된다.
+        // why?
+        // setTimeout function의 callback function인 function() { console.log(i); }가 실행되는 시점 때문이다.
+        // callback function의 (console.log(i);)는 반복문이 실행됨과 동시에 바로 실행되는 코드가 아니다.
+        // 1초후, 2초후...에 실행되는 코드이다.
+
+        // 문제는 반복문 속 i가 (var i = 0; i < 5; i++)를 도는 시점은 1초도 안 되는 매우 짧은 순간이기 때문에
+        // (console.log(i);)가 실행되는 시점에 i는 이미 (i = 5)가 돼있는 시점이라는 것이다.
+        // (이미 (i < 5) 조건을 만족하지 못해 반복문 자체를 빠져나와 5가 된 것이다.)
+
+        // 자세히
+        // 컴퓨터가 1초도 안되는 찰나의 시간에 아래의 코드를 읽어버리는 것이다.
+        // setTimeout(function() { console.log(i); }, 1*1000 );
+        // setTimeout(function() { console.log(i); }, 2*1000 );
+        // setTimeout(function() { console.log(i); }, 3*1000 );
+        // setTimeout(function() { console.log(i); }, 4*1000 );
+        // setTimeout(function() { console.log(i); }, 5*1000 );
+
+        // 이제 위의 5줄의 코드를 각 초에 맞춰 실행하려고 i의 값을 보니까(참조하니까) (i = 5)가 돼버린 것이고
+        // 그렇기에 5초 동안 '5'가 다섯번 출력된 것이다.
+
+        // ============ 해결법 : var를 let으로 바꾼다. ============
+        for (let i = 0; i < 5; i++) {
+            setTimeout(function() { console.log(i); }, i*1000 );
+        }
+
+        // let은 유효 범위가 block scope{중괄호}이므로 마치 아래와 같이 코드가 읽히는 것이다.
+        // var는 유효 범위가 function인데 for 문은 function이 아니므로 (var i)가 마치 전역변수 처럼 쓰인 것이다.
+
+        {
+            let i = 0;
+            setTimeout(function() { console.log(i); }, i*1000 );
+        }
+
+        {
+            let i = 1;
+            setTimeout(function() { console.log(i); }, i*1000 );
+        }
+
+        {
+            let i = 2;
+            setTimeout(function() { console.log(i); }, i*1000 );
+        }
+
+        {
+            let i = 3;
+            setTimeout(function() { console.log(i); }, i*1000 );
+        }
+
+        {
+            let i = 4;
+            setTimeout(function() { console.log(i); }, i*1000 );
+        }
+    </script>
+// =======================================================================================================================
+    <script>
+        console.log("========== 6번 문제 ========");
+
+        // 6. eventListener 반복시키기
+        var btns = document.querySelectorAll('button');
+        var modals = document.querySelectorAll('div');
+
+        for (var i = 0; i < 3; i++){  // let i 라고 고쳐야한다.
+            btns[i].addEventListener('click', function () {
+                modals[i].style.display = 'block';
+            });
+        }
+        // eventListener의 callback function의 실행 코드인 (modals[i].style.display = 'block';)는 반복문이 실행됨과 동시에 실행되는 코드가 아니다.
+        // 최소 반복문이 모두 종료된 다음에 실행되는 코드이다. (당연히 사람이 버튼을 누르는 속도보다 반복문이 읽히는 속도가 빠르니까)
+        
+        // 자세히
+        // btns[0].addEventListener('click', function(){
+        //     modals[i].style.display = 'block';
+        // });
+
+        // btns[1].addEventListener('click', function(){
+        //     modals[i].style.display = 'block';
+        // });
+
+        // btns[2].addEventListener('click', function(){
+        //     modals[i].style.display = 'block';
+        // });
+
+        // 반복문을 모두 돌면 위와 같이 코드가 읽히고 버튼을 눌러야 (modals[i].style.display = 'block';)가 실행되는데
+        // 그제서야 (var i)의 값을 참조한다.
+        // 근데 이때 i의 값은 3이므로(이미 for문을 빠져나온 상태이니까)
+        // (index = 3)인 (<div style="display : none">모달창2</div>)을 찾을 수 없는 것이다.
+        // 그래서 Error가 나는 것이다.
+
+
+        // ============ 해결법 : var를 let으로 바꾼다. ============
+        for (let i = 0; i < 3; i++){
+            btns[i].addEventListener('click', function () {
+                modals[i].style.display = 'block';
+            });
+        }
+
+        // let을 쓰면 아래와 같이 코드가 실행된다.
+
+        {
+            let i = 0;
+            btns[i].addEventListener('click', function(){
+                modals[i].style.display = 'block';
+            });
+        }
+
+        {
+            let i = 1;
+            btns[i].addEventListener('click', function(){
+                modals[i].style.display = 'block';
+            });
+        }
+
+        {
+            let i = 2;
+            btns[i].addEventListener('click', function(){
+                modals[i].style.display = 'block';
+            });
+        }
+    </script>
+</body>
+</html>
