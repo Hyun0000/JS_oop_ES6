@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+---------------------------------------- 1번 문제 ----------------------------------------
+    <script>
+        // 양말과 바지의 순서를 바꾸어 출력
+
+        console.log("===============1번 문제===============");
+        var pants = 20;
+        var socks = 100;
+        `바지${pants} 양말${socks}`;
+
+        // 기본 해체분석기
+        function func1(strs, vals1, vals2) {
+            console.log(strs);
+            console.log(vals1);
+            console.log(vals2);
+        }
+
+        func1`바지${pants} 양말${socks}`;
+        console.log("==================답=================");
+
+        // 단어 순서를 바꾸는 해체분석기
+        function func2(strs, vals1, vals2) {
+            console.log(strs[1] + vals1 + strs[0] + vals2);
+        }
+        // 첫번째 parameter인 strs가 모든 글자들을 받아와서 Array 형태로 담는다.
+        // 두번째 & 세번째 parameter인 (vals1, vals2)로 모든 변수들을 받는다.
+
+        func2`바지${pants} 양말${socks}`;
+    </script>
+
+---------------------------------------- 2번 문제 ----------------------------------------
+    <script>
+        // 2. 바지가 0개면 '바지다팔렸어요'라는 문자를 대신 출력
+
+        console.log("===============2번 문제===============");
+        var pant = 20;
+        var sock = 100;
+        `바지${pant} 양말${sock}`;
+
+        function func3(strs, vals1, vals2) {
+            console.log(strs[0] + vals1 + strs[1] + vals2);
+        }
+
+        console.log("==================답=================");
+        while(pant > 0) {
+            func3`바지${pant} 양말${sock}`;
+            pant--;
+            if(pant == 0) {
+                pant = "다팔렸어요";
+                func3`바지${pant} 양말${sock}`;
+            }
+        }
+    </script>
+</body>
+</html>
