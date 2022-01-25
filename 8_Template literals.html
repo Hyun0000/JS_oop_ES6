@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // ------------------------ 1 ------------------------
+        // ES6에서는 아래와 같이 backtick(=backquote) 기호를 이용해서 문자를 만들 수 있다.
+        // 따옴표를 이용해서 만든 문자와 동일한 문자 개념이다.
+        var sample = `garden`;
+
+        // backquote 문자열의 장점
+        // 1. Enter Key 가능
+        var str = `apple`;
+        var str2 = 'apple';
+        var str3 = "apple";
+
+        // 2. 문자열 중간에 변수를 넣기가 쉽다.
+        // (가장 맛있는 과일은 kiwi 이다.)라는 문장을 만들어 보자.
+        var fruit = "kiwi";
+
+        // (1). 기존 따옴표
+        var test1 = "가장 맛있는 과일은 " + fruit + " 이다.";
+
+        // (2). backquote 사용
+        var test2 = `가장 맛있는 과일은 ${fruit} 이다.`;
+        // JS로 HTML 작성시 해당 기능이 유용하다.
+        // ex) `<div>${fruit}</div>`
+
+        // 참고로 공백도 입력한 만큼 출력된다.(기존 따옴표도 입력한 만큼 공백이 출력된다.)
+        var test3 = `가장   맛있는 과일은     ${fruit}      이다.`;
+
+        console.log(test1);
+        console.log(test2);
+        console.log(test3);
+
+        console.log("====================2=================");
+        // ------------------------ 2 ------------------------
+        // tagged literal(backquote + function)
+        function func() {
+            return 10;
+        }
+
+        console.log(func());
+        // 보통 function을 실행할 때 일반적으로 위와 같이 (소괄호)를 이용한다. ==> func()
+        console.log(func``);
+        // ES6 부터는 (소괄호)대신 backtick을 사용해 function을 실행할 수 있다. ==> func``
+        // 간단히 말해 (소괄호)대신 backtick이 function 실행을 위해 쓰이는 것이다. 당연히 실행결과도 동일하다.
+
+        // 심지어 아래와 같이 실행해도 동일한 결과가 나온다.
+        console.log(func`안녕하세요 ${val} 입니다.`);       
+
+        console.log("===================3==================");
+        // ------------------------ 3 ------------------------
+        // tagged literal의 유용한 예
+        
+        // 아래의 function은 주어진 문자를 (해체 & 분석)하는 역할을 할 것이다.
+        function 해체분석기(문자들, 변수들) {    // 파라미터가 최소 2개 있어야한다.(문자&변수를 각각 분리해서 담아야 하니까)
+            console.log(문자들);                // 문자들 parameter의 역할 : 주어진 `backtick 문자열` 내의 모든 순수 문자들만 골라 array에 담는다.(문자들의 array 화)
+            console.log(변수들);                // 변수들 parameter의 역할 : 주어진 `backtick 문자열` 내의 ${ } 변수를 담는다.
+        }
+
+        var val = '손흥민';
+        var strs = `안녕하세요 ${val} 입니다.`;
+
+        // 위의 function을 tagged literal로 실행해보자
+        해체분석기`안녕하세요 ${val} 입니다.`
+
+        // (결과값)
+        // ['안녕하세요 ', ' 입니다.', raw: Array(2)]
+        // 손흥민
+        // * (raw: Array(2))는 ['안녕하세요 ', ' 입니다.'] 이다.
+
+        // ES6에서는 backquote을 이용한 `template literal`을 (해체 & 분석) 할 수 있다.
+        // 이로인해 기존 문자의 (단어 순서 변경 / 특정 단어 제거 / ${변수} 위치 변경) 등을 할 수 있다.
+        // 해체 기준 : {중괄호}를 기준으로 모든 문자열을 분리한다.(공백포함, 입력한 공백만큼 인식한다.)
+
+        // tagged literal을 이용해 글자 순서를 변경해보자(변수도 출력해보자)
+        function 해체분석기실습(문자들, 변수들) {
+            console.log(문자들[1] + 변수들 + 문자들[0]);
+        }
+        해체분석기실습`안녕하세요 ${val} 입니다.`
+        // (결과값) : 입니다.손흥민안녕하세요 --> 쌩 JS로 이 짓을 하려면 아주 귀찮아진다.
+
+        console.log("=====================================");
+        // cf)
+        // 단, 변수는 array 화 되지 않기에 문자열에 있는 모든 변수들을 출력하고 싶으면 변수의 개수만큼 '변수들' parameter 개수를 맞춰줘야한다.
+        // ex)
+        var t1 = "kim";
+        var t2 = 'lee';
+
+        function 해체분석기2(문자들, 변수들, 변수들2) {
+            console.log(문자들);
+            console.log(변수들);
+            console.log(변수들2);
+        }
+        해체분석기2`대한민국의 성씨 중 하나는 ${t1}과 ${t2}이다.`
+    </script>
+</body>
+</html>
