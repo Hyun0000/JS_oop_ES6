@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Spread Operator의 기능
+
+        // 1. Array에 붙이면 Array의 대괄호를 제거해준다.
+        var arr = ['hello', 'world'];
+        console.log(arr);
+        console.log(...arr);
+        console.log('hello', 'world');
+        // console.log(...arr); = console.log('hello', 'world');
+
+        console.log(...arr[0]);
+        console.log(...arr[0][0]);
+        console.log(...arr[0][4]);
+
+        console.log(...arr[1]);
+        console.log(...arr[1][0]);
+        console.log(...arr[1][4]);
+
+        console.log("======================================================");
+
+        // 2. 일반 string에 Spread Operator ==> string을 쪼개준다.
+        var str = "hello";
+        console.log(str);
+        console.log(...str);                // string의 대괄호를 제거해준다고 생각하면 된다.(그냥 그런 '느낌'이라고 생각하면 된다.)
+        console.log('h','e','l','l','o');   // Spread Operator로 인해 좌측과 같이 "hello"라는 문자열이 해체됐다고 생각하면 된다.
+        // console.log(...str); = console.log('h','e','l','l','o');
+
+        // cf) string은 인덱싱이 가능하다.
+        console.log(str[0]);                // 굳이 Spread Operator를 안 써도 일반 string도 인덱싱이 가능하다.
+        console.log(str[4]);                // 굳이 Spread Operator를 안 써도 일반 string도 인덱싱이 가능하다.
+        console.log(...str[0]);             // console.log(str[0]); = console.log(...str[0]);
+        console.log(...str[4]);             // console.log(str[4]); = console.log(...str[4]);
+        // * 그렇다고 string을 array라고 생각하면 안 된다.(string은 절대 array가 아니다.)
+
+        console.log("======================================================");
+
+        // 3. array 합치기 & 복사 ==> array deep copy 시 유용
+        var a = [1,2,3];
+        var b = [4,5];
+        var c = [...a];                     // deep copy (독립적인 값을 가진다.)
+        // (var c = [...a]) 자세히
+        // (...a)로 인해 a = [1,2,3]의 대괄호가 사라져 (1,2,3)이 됐다.  ==>  (...a = 1,2,3)
+        // (1,2,3)이 다시 [대괄호]에 들어가 [1,2,3]이 됐다.
+        // 즉, 다시 array가 됐다는 얘기이다.  ==>  c = [1,2,3];
+        // (Spread Operator를 이용해서 a값의 괄호를 제거해준 다음에 다시 괄호를 씌우는 것)
+
+        console.log(...a);
+        console.log(c);
+        console.log(c.length);
+
+        var d = [...a, ...b]; // var d = [1,2,3,4,5];
+        console.log(d);
+        console.log(d.length);
+
+        console.log("========================== shallow & deep copy ==========================");
+
+        // 3-1. 얕은 복사(shallow copy)와 깊은 복사(Deep Copy)
+
+        // Spread Operator를 이용하면 array와 object의 deep copy가 가능하다.
+        // 하지만 일반 등호(=)로 복사하면 값을 '공유'한다. array, object 모두 동일
+        // 얕은 복사는 array나 object의 주소값을 '공유'한다고 생각하면 된다. 그로인해 '값 공유'가 일어난다.
+        // Spread Operator를 이용해야 독립적인 값을 가지게 할 수 있다.(deep copy가 가능하다.)
+        // cf) array와 object는 reference data type 이다.
+
+        var t = [1,2,3];
+        var q = t;          // 얕은 복사 ( [1,2,3]을 공유한다. )
+        console.log(t);
+        console.log(q);
+        t[0] = 10; t[3] = 4;
+        console.log(t);     // [10, 2, 3, 4]
+        console.log(q);     // [10, 2, 3, 4]
+
+        console.log("======================================================");
+
+        // 4. object 합치기
+        var o1 = {a : 1, b : 2};
+        var o2 = {c : 3};
+        var o3 = {...o1, c : 3};        // o1 + o2
+        var o4 = {...o1};               // o1 'shallow copy'(o1과 독립적인 o4 object 탄생)
+        console.log(o3);                // (o1 = {a : 1, b : 2})을 풀어해쳐서 o3에 넣어준 것이다.
+        console.log(o4);
+
+        // * object에서의 shallow copy
+        // array의 deep copy와 object의 deep copy는 개념이 다르다.
+        // object에서의 deep copy는 object 안의 object까지도 엮임현상없이 copy하는걸 뜻한다.
+        // shallow copy는 그냥 맨 위의 object하나만 copy하는걸 뜻한다.
+
+        // Spread Operator를 이용해 deep copy를 하다가 값 중복이 발생할 수 있다.
+        // ex)
+        var obj1 = {a : 1, b : 2};
+        var obj2 = {a : 2};
+        var obj3 = {...obj1, ...obj2};
+        console.log(obj3);              // {a: 2, b: 2}
+        // (obj3 = {...obj1, ...obj2})은 (obj3 = {a : 1, b : 2, a : 2})와 같은 모습이 되는데
+        // 이렇게 object에서 값이 겹치면(중복되면) 무조건 가장 뒤에 온 놈의 값이 남는다.
+        // 즉, (a : 2)가 남는다.
+        console.log("======================================================");
+        // ...은 object {중괄호}안 / array [대괄호]안 / function (소괄호)안에서 써야한다.
+        // 아무것도 없는데 (...a)와 같이 쓰면 Error가 난다.
+    </script>
+</body>
+</html>
