@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // function에서의 Spread Operator 활용 ==> array를 parameter형태로 집어넣고 싶을 때 사용
+
+        function sum(a, b, c){          // parameter 자리에 ...을 쓰는 것은 Rest parameter이다.
+            console.log(a + b + c);
+        };
+
+        // Spread Operator를 이용해 배열 arr 내의 모든 데이터를 sum function의 parameter로 집어넣어 보자
+        var arr = [10, 20, 30];
+
+        sum(...arr);                        // (...arr) : arr을 펼쳐라
+                                            // sum(...arr) = sum(10,20,30) ==> [10, 20, 30]의 대괄호가 Spread Operator에 의해 제거
+        sum.apply(undefined, arr);          // 예전방식
+        sum.apply("ㄴㅇㄴㅇㄴㅇ", arr);
+
+        // sum.apply(undefined, arr)에서 undefined는 무슨 의미?
+        // sum.apply(undefined, arr) : sum function을 실행하는데 undefined object에 적용해서 실행해라, 이때 argument로 arr을 집어넣어라
+        // undefined는 사실상 아무 뜻도 없다. undefined 대신에 "ㄴㅇㄴㅇㄴㅇ" 같은 의미없는 글자를 넣어도 정상 실행된다.
+        // 즉, apply function을 쓰기위해서(= parameter로 array를 집어넣기 위해) 의미없는 object를 집어넣은 것이다.
+        // 일종의 편법이다.
+
+        // cf) object를 넣지 않으면 NaN이 출력된다.
+        sum.apply(arr); // NaN
+
+        console.log("=====================================================");
+    </script>
+
+    <script>
+        // apply & call : JS 내장함수 ==> 함수를 옮겨와서 실행해 주세요
+
+        var person = {
+            hello : function() {
+                console.log(this.name + '안녕');
+            }
+        }
+
+        var person2 = {
+            name : '손흥민'
+        }
+        // person object에 있는 hello function을 person2 object에서도 사용하고 싶다.
+        // 이때 굳이 person2 object에 똑같은 function을 중복해서 만들 필요가 없다.
+        // 이럴때 사용하는 것이 apply와 call 이다.
+
+        // person.hello()를 person2 object에 '적용'하고 싶을 때
+
+        // 1.
+        person.hello.apply(person2); // 손흥민안녕
+        // person.hello()을 person2 object에 적용해서 실행한다.
+
+        // 2.
+        person.hello.call(person2); // 손흥민안녕
+        // person.hello()을 person2 object에 적용해서 실행한다.
+// ================================================================================================================
+        // hello function에 argument를 넣어서 실행하고 싶을때가 있는데
+        // 이때 person.hello(1,2,3).apply(person2); ==> 이렇게 하지 않는다.
+        // apply와 call에 argument를 넣어준다. 이때 두 function의 차이점이 있다.
+
+        // apply : person.hello.apply(person2, [1,2,3]); ==> array 형태로 argument를 집어 넣을 수 있다.
+        // call : person.hello.call(person2, 1, 2, 3); ==> 일반적인 형태로 argument를 집어 넣어야한다.
+
+        // cf) 물론 apply도 아래와 같이 parameter를 집어넣을 수 있다.
+        // apply : person.hello.apply(person2, 1);
+    </script>
+</body>
+</html>
