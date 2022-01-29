@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        console.log("=========================1==========================");
+        function sum(a, b = 10) {
+            console.log(a + b);
+        }
+        // (b = 10)가 default parameter이다.
+        // (b = 10)는 b 자리에 parameter를 아무것도 넣지 않았을 때만 발동된다.
+
+        sum(1, 2);
+        sum(1); // (b = 10) 발동
+        sum();
+
+        console.log("=========================2==========================");
+
+        // default parameter에는 연산자도 사용 가능하다.
+        function sum2(a, b = 10 * a) {
+            console.log(a + b);
+        }
+
+        sum2(1, 2);
+        sum2(1); // (b = 10 * a) 발동
+
+        console.log("=========================3==========================");
+
+        // default parameter에는 연산자도 사용 가능하다.
+        function sum3(a, b = 10 * 2) {
+            console.log(a + b);
+        }
+
+        sum3(1, 2);
+        sum3(1); // (b = 10 * 2) 발동
+
+        console.log("=========================4==========================");
+
+        // defualt parameter로 function을 지정할 수도 있다.
+        function 기본값함수() {
+            return 10;
+        }
+
+        function 더하기(a, b = 기본값함수()) {
+            console.log(a + b);
+        }
+
+        더하기(1, 2);
+        더하기(1); // (b = 기본값함수()) 발동
+
+        console.log("=========================5==========================");
+        // 심지어 defualt parameter로 지정한 function에 parameter를 전달할 수도 있다.
+        // (이건 내가 개인적으로 한 것이다.)
+
+        function test1(a) {
+            return (a + 10);
+        }
+
+        function test2(a, b = test1(a)) {
+            console.log(a + b);
+        }
+
+        test2(10, 1);
+        test2(10); // (b = test1(a)) 발동
+// ============================================================================================================
+        console.log("=========================6==========================");
+
+        // arguments : function의 모든 parameter를 한 번에 싸잡아서 다루고 싶은 경우에 사용하는 '키워드'
+        // arguments는 function에 들어온 모든 parameter들을 'array 처럼' [대괄호]로 감싸주는 기능이 있다.
+        // * array처럼 생겼고 array처럼 쓸 수는 있지만, 엄밀히 말하면 array가 아니다.
+        // arguments는 일종의 'array 같은 변수'라고 생각하면 된다. 대괄호처럼 생겼지만 array는 아니기 때문이다.
+
+        // cf)
+        // array는 대괄호로 표현하지만, 대괄호라고 해서 항상 array를 의미하는 것은 아니다.
+        // 일례로 forEach는 array를 이용해서 돌릴 수 있는데 arguments를 이용하면 forEach를 돌릴 수 없다.
+        
+        function argumentsTest(a, b, c) {
+            console.log(arguments);
+            console.log("arguments.length : " + arguments.length);
+
+            // arguments를 하나씩 출력해보자
+            console.log(arguments[0]);
+            console.log(arguments[1]);
+            console.log(arguments[2]);
+            console.log(arguments[3]); // undefined
+
+            // arguments를 이용해 for문도 사용할 수 있다.
+            for (let i = 0; i < arguments.length; i++) {
+                console.log(arguments[i]);
+            }
+        }
+
+        argumentsTest(2, 3, 4);
+    </script>
+</body>
+</html>
