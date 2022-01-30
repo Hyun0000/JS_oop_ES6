@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        console.log("===================1===================");
+        // 1. spread 문제 : 출력값은?
+
+        var a = [1,2,3];
+        var b = '김밥';
+        var c = [...a, ...b];
+        console.log(c);
+        c.forEach( e => console.log(e) );
+    </script>
+
+    <script>
+        console.log("===================2===================");
+        // 2. spread 문제 : 출력값은?
+
+        var a2 = [1,2,3];
+        var b2 = ['you', 'are'];
+        var c2 = function(a,b) {
+            console.log([[...a], ...[...b]][1]);
+        }
+        c2(a2,b2);
+        /*
+            [[1,2,3], ...['you', 'are']][1]
+            [[1,2,3], 'you', 'are'][1]
+            [[1,2,3], 'you', 'are'][1] = you
+        */
+    </script>
+
+    <script>
+        console.log("===================3===================");
+        // 3. default parameter 문제 : 출력값은?
+        function func1(a = 5, b = a * 2){
+            console.log(a + b);
+            return 10;
+        }
+        func1(3);
+    </script>
+
+    <script>
+        console.log("===================4===================");
+        // 4. default parameter 문제 : 출력값은?
+        function func2(a = 5, b = a * 2){
+            console.log(a + b);
+        }
+        func2(undefined, undefined);
+        // undefined : func2 function의 parameter에 아무것도 집어넣지 않았다고 판단한다.
+        // 그래서 default parameter가 발동
+
+        // cf)
+        function testUndefined(a, b) {
+            console.log(a);
+        }
+        testUndefined(); // undefined가 출력된다.
+        // 즉, (parameter를 아무것도 넣지 않았다 = undefined = parameter가 들어오지 않았다.)
+        // (a == undefined == 정의안된 parameter)
+        // 그래서 default parameter가 발동한 것이다.
+    </script>
+
+    <script>
+        console.log("===================5===================");
+        // 5. array를 만들어주는 function 만들기
+        // 'arguments'로도 할 수는 있지만 'arguments'는 인자(argument)로 들어올 parameter의 개수를
+        // 미리 정해줘야 하기에 확장성이 매우 떨어진다.
+        function arrayFactory(...params) {
+            return params;
+        }
+
+        var newArray = arrayFactory(1,2,3,4,5,2,3,4,5,2,3,4,5,2);
+        console.log(newArray);
+        console.log(newArray.length);
+    </script>
+
+    <script>
+        console.log("===================6===================");
+        // 6. 최댓값 구하기
+        // JS에서 최댓값 구하는 기본 내장 함수 : Math.max()
+        // ex) Math.max(5,6,4,3); = 6
+
+        function maxNumFunc(arr) {
+            return Math.max(...arr);
+        }
+
+        var numbers = [2,3,24,5,6,123,3,22,5,5,423,6,7];
+        var maxNum = maxNumFunc(numbers);
+        console.log(maxNum);
+    </script>
+
+    <script>
+        console.log("===================7===================");
+        // 7. 글자를 알파벳순으로 정렬해주는 function 만들기
+        // (array가 아니라 문자열에도 적용할 수 있는 알파벳순 정렬 function 만들기)
+
+        // JS에서 array 내의 데이터를 알파벳순으로 정렬하고 싶을 때 sort()라는 array 내장 함수를 사용한다.
+        // sort function은 array에만 적용 가능하다.
+        // ex) console.log( [ 'b', 'c', 'a' ].sort() );  ==>  [ 'a', 'b', 'c' ] 출력
+
+        function sortAlpha(str) {
+            console.log([...str]);
+            console.log([...str].sort().join());
+            // cf) join() : array 내의 자료를 전부 붙여서 한 문자로 만들고 싶을 때 사용
+            return [...str].sort()
+        }
+
+        var result = sortAlpha('bear');
+        console.log(result);
+    </script>
+
+    <script>
+        console.log("===================8===================");
+        // 8. 데이터마이닝 기능
+        // 입력된 문자의 알파벳들의 출현 갯수를 세어주는 function 만들기
+        // ex) 글자세기('aacbbb') ==> { a : 2, b : 3, c : 1 } 출력(object 형식으로 출력하기)
+
+        const str = 'aacbbb';
+
+        // 1. if 조건문 & for 사용
+        function sortStr(strParams) {
+            return [...strParams].sort();
+        }
+
+        let sort1 = sortStr(str);
+        let resultObj1 = {};
+        resultObj1[sort1[0]] = 1;
+
+        for (let i = 1; i < sort1.length; i++) {
+            if(sort1[i - 1] == sort1[i]) {
+                resultObj1[sort1[i - 1]] += 1;
+            } else {
+                resultObj1[sort1[i]] = 1;
+            }
+        }
+        console.log(resultObj1);
+
+
+        // 2. 삼항연산자 & forEach 사용
+        let resultObj2 = {};
+        function sortStr2(strParam) {
+            [...strParam].forEach(e => {
+                (resultObj2[e] > 0) ? ++resultObj2[e] : resultObj2[e] = 1;
+            })
+            return resultObj2;
+        }
+
+        console.log(sortStr2(str));
+    </script>
+</body>
+</html>
