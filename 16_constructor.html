@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 아래의 학생1 object를 찍어내는 constructor를 만들어보자
+        var 학생1 = {name : 'Kim', age : 15};
+
+
+        // constructor를 만들어 보자  cf) constructor는 첫 글자를 대문자로 한다. --> Student
+        function Student() {
+            this.name = "Kim";
+            this.age = 15;
+            // this = 새로 생성되는 object를 의미한다. = instance
+            // this.name = ~~~; : 새로 생성되는 object의 name은 ~~~ 이다.
+            // this.age = ~~~; : 새로 생성되는 object의 age는 ~~~ 이다.
+        }
+
+        // constructor를 이용해 object를 찍어내보자
+        let s1 = new Student(); // new Student() : object 생성
+        console.log(s1);        // Student {name: 'Kim', age: 15}
+
+        let s2 = new Student();
+        console.log(s2);
+
+        console.log("============================================================");
+    </script>
+
+    <script>
+        // 아래의 학생2 object를 찍어내는 constructor를 만들어보자
+        var 학생2 = {
+            name : 'Kim',
+            age : 15,
+            sayHi : function () {
+                console.log("안녕하세요. " + this.name + " 입니다.");
+            }
+        };
+
+        function Student2() {
+            this.name = "Kim";
+            this.age = 15;
+            this.sayHi = function () {
+                console.log("안녕하세요. " + this.name + " 입니다.");
+                console.log(this);
+                // 여기서의 this = this를 감싸고 있는 function의 주인님 object
+            }
+        }
+
+        let s3 = new Student2();
+        console.log(s3);
+        console.log(s3.name);
+
+        s3.sayHi();
+        // [결과값]
+        // 안녕하세요. Kim 입니다.
+        // {name: 'Kim', age: 15, sayHi: ƒ}
+
+        console.log("============================================================");
+    </script>
+
+    <script>
+        // 내가 원하는 값을 이용해 object를 찍어내보자
+        function Student3(name, age) {
+            this.name = name;
+            this.age = age;
+            this.sayHi = function () {
+                console.log("안녕하세요. " + this.name + " 입니다.");
+                console.log(this);
+            }
+        }
+
+        let s4 = new Student3("Lee", 15);
+        let s5 = new Student3("choi", 25);
+        console.log(s4);
+        console.log(s5);
+        s4.sayHi();
+        s5.sayHi();
+    </script>
+
+    <script>
+        console.log("====================연습문제====================");
+        console.log("============1============");
+
+        function calVAT() {
+            console.log(this.name + "의 부가가치세는 " + (this.price * 0.1) + "원입니다.");
+        }
+
+        function Product(name, price, func) {
+            this.name = name;
+            this.price = price;
+            this.VAT = func;
+        }
+
+        let product1 = new Product('초콜릿', 6000, calVAT);
+        let product2 = new Product('감귤', 8000, calVAT);
+
+        console.log(product1);
+        console.log(product2);
+
+        console.log("============2============");
+        product1.VAT();
+        product2.VAT();
+    </script>
+</body>
+</html>
