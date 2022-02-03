@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 부모
+        function Student() {
+            this.name = 'Kim';
+            this.age = 15;
+        }
+        
+        // 자식(부모가 가지고 있는 name, age 등을 그대로 물려받았다.)
+        var student1 = new Student();
+        var student2 = new Student();
+
+        console.log(Student.prototype); // 출력값 : {constructor: ƒ}
+        // Student.prototype = 부모의 유전자
+
+        console.log(student1);          // {name: 'Kim', age: 15}
+        console.log(student2);          // {name: 'Kim', age: 15}
+
+        Student.prototype.gender = 'woman';
+        // Student.prototype이라는 부모의 유전자에 'key : value' 형태로 (gender : 'woman') 값을 추가한 것이다.
+        // 즉, prototype의 자료 또한 object 자료 다루듯이 하면 된다.
+        
+        // 부모의 유전자에 값(gender)을 추가했으니 자식들은 해당 값을 사용할 수 있다.
+        console.log(student1.gender);   // woman 출력
+        console.log(student2.gender);   // woman 출력
+
+        console.log(student1);          // {name: 'Kim', age: 15}, 자식의 값은 변함이 없다.
+        console.log(student2);          // {name: 'Kim', age: 15}, 자식의 값은 변함이 없다.
+        
+        console.log(Student.prototype); // {gender: 'woman', constructor: ƒ}, 부모한테 gender 속성이 추가됐다.
+    </script>
+
+    <script>
+        console.log(Array.prototype);
+        var arr = [1,2,3];
+        console.log(arr);
+        console.log(typeof arr);
+    </script>
+</body>
+</html>
