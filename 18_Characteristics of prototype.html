@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function Student(name, age) {
+            this.name = name;
+            this.age = 15;
+        }
+
+        Student.prototype.gender = 'woman';
+
+        var s1 = new Student("Kim");
+
+        // prototype은 constructor function에서만 생성된다.
+        // 아래와 같은 일반적인 array, object에서는 확인할 수 없다.
+        var arr = [1,2,3];
+        var obj = {name : "jung"};
+
+        console.log(Student.prototype);     // {gender: 'wendy', constructor: ƒ}
+        console.log(arr.prototype);         // undefined
+        console.log(obj.prototype);         // undefined
+
+        console.log("====================================================================");
+
+        // __proto__에 대해 알아보자
+        /*
+            - prototype과 유사한 키워드로서 내 뿌리(바로 위 부모)를 찾고 싶을 때 사용
+            - 모든 자식들은 __proto__ 속성을 사용할 수 있다.
+            - __proto__를 이용해 부모의 유전자(= constructor명.prototype)를 출력한다.
+        */
+        console.log(s1.__proto__);          // s1의 부모의 유전자를 출력해라
+        console.log(Student.prototype);
+// =============================================================================================================
+        console.log("====================================================================");
+
+        // __proto__를 이용해 부모 강제 등록하기(일종의 편법)
+        var parent = {name : 'Park'};
+
+        // parent의 자식 object(child)를 만들건데 이때 parent의 name 속성을 그대로 사용하고 싶다.
+        // 문제는 지금 parent object가 constructor가 아닌 일반 object이다.
+        // 이럴때 __proto__ 를 이용한다.
+        var child = {};
+
+        child.__proto__ = parent;           // child의 부모 유전자는 parent이다.
+        console.log(child.name);            // Park
+
+        // cf)
+        // JS에서 모든 function, object, array 등은 모두 최종 부모가 Object이다.
+        // 'new Object'로 생성된다고 생각하면 된다.
+        // 일종의 어머니 나무와 같이 만물의 근원이다.
+    </script>
+</body>
+</html>
