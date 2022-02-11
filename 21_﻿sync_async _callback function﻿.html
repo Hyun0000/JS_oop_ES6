@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 동기식 처리
+        console.log(1);
+        console.log(2);
+        console.log(3);
+    </script>
+// =========================================================================================================
+    <script>
+        // 비동기식 처리
+        console.log(1);
+        setTimeout(() => console.log(2), 1000); // 여기서 코드 실행이 1초간 정지되지 않는다.
+        console.log(3);
+    </script>
+// =========================================================================================================
+    <script>
+        // 1이 먼저 빠르게 출력되고 '1초 후에' 2가 출력된다.
+        console.log(1);
+        setTimeout(() => console.log(2), 1000);
+    </script>
+// =========================================================================================================
+    <script>
+        // callback function은 비동기와 관계없다. function 디자인 패턴일 뿐이다.
+
+        function func1(callbackFunc) {
+            console.log(1);
+            callbackFunc();
+        }
+
+        function func2() {
+            console.log(2);
+        }
+
+        func1(func2);
+    </script>
+</body>
+</html>
