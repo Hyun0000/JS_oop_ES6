@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Promise는 ajax나 setTimeout 등에서 callback function 대신 사용할 수 있다.
+        // callback function 대신 좀 더 가독성을 높일 수 있다.
+
+        // var promise = new Promise()
+        // 단순히 위의 코드만으로는 Promise를 사용할 수 없다.
+        // Promise 안에서 성공, 실패 여부를 먼저 판단해야만 then과 catch를 그에 맞춰 실행시킬 수 있다.
+        // 즉, Promise는 성공, 실패 판정 기계이다.
+
+        // Promise 디자인 패턴
+        let p1 = new Promise(function(resolve, reject) {   // cf) 관습적으로 (resolve, reject)라고 적는다.
+            // 아래의 function으로 Promise의 성공, 실패 판정을 한다.
+            // resolve() : Promise 성공 / reject() : Promise 실패
+            // resolve() : then 실행    / reject() : catch 실행
+            
+            console.log("p1 성공, 실패 판정");
+
+            // Promise 사용 방법 예시
+            // 어려운 연산이 끝난 후 특정 코드를 실행하고 싶다.
+            var cal = (1 + 1);
+            // cf)
+            // JS는 기본 베이스가 '동기식 처리'이기 때문에 var cal = (1 + 1); 를 먼저 처리한후
+            // resolve(cal); OR reject(cal); 를 처리힌다.
+
+            // 성공
+            resolve(cal);        // argument도 전달할 수 있다.
+
+            // 실패
+            // reject(cal);      // argument도 전달할 수 있다.
+        });
+
+        // 일반적인 callback function으로는 성공/실패 case를 분류할 수가 없다. 하지만 Promise는 가능하다.
+        
+        // p1 : 얘가 위에서 성공, 실패 여부를 받아오는 것이다.
+        p1.then(function(result) {              // Promise가 성공일 경우 실행할 코드
+                                                // argument를 전달받을 수 있다.
+            console.log("then : " + result);
+            console.log("Promise 성공");
+        }).catch(function(result) {             // Promise가 실패할 경우 실행할 코드
+                                                // argument를 전달받을 수 있다.
+            console.log("catch : " + result);
+            console.log("Promise 실패");
+        }).finally(function() {
+            console.log("Promise finally");     // 성공, 실패 여부와 관계없이 무조건 실행시킬 코드
+            console.log("==============================================================================");
+        })
+
+        // cf) then, catch, finally에 각각의 case에 맞춰 실행할 callback function을 넣은 것이다.
+
+        console.log("==============================================================================");
+    </script>
+
+    <script>
+        // Promise는 위와 같이 허접한 예제에서는 잘 쓰지 않는다.
+
+        // Promise는 성공, 실패 판정 기계이다.
+        let p2 = new Promise(function(resolve, reject) {
+            // 1초후에 성공, 실패를 판정하는 기계를 만들어보자
+            setTimeout(function() {
+                // 성공
+                resolve();
+
+                // 실패
+                // reject();
+            }, 1000);
+        })
+
+        p2.then(function() {
+            console.log("Promise 성공");
+        }).catch(function() {
+            console.log("Promise 실패");
+        })
+    </script>
+</body>
+</html>
