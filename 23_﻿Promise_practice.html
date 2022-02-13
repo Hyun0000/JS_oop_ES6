@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <img id="test" src="https://codingapple1.github.io/kona.jpg">
+
+    <script>
+        console.log("============ 1번 문제 ============");
+
+        // 1. <img> 이미지 로딩 성공 / 실패 시 특정 코드 실행
+        let p1 = new Promise(function(resolve, reject) {
+            let img = document.getElementById('test');
+
+            // 이미지 로드 성공
+            img.onload = () => resolve();
+
+            // 이미지 로드 실패
+            img.onerror = () => reject();
+        })
+
+        p1
+        .then(() => console.log("1번 문제 성공"))
+        .catch(() => console.log("1번 문제 실패"));
+    </script>
+
+    <script>
+        console.log("============ 2번 문제 ============");
+
+        // 2. Ajax 요청 성공 / 실패 시 특정 코드 실행
+        // cf) jQuery CDN 사용
+
+        let p2 = new Promise((resolve, reject) => {
+            $.ajax({
+                type: "GET",
+                url: "https://codingapple1.github.io/hello.txt",
+                success: function (data) {
+                    // ajax 성공
+                    resolve(data);
+                },
+                error: function () {
+                    // ajax 실패
+                    reject();
+                }
+            })
+        });
+
+        // 하나의 new Promise()에서 받은 값만으로도 then을 연이어서 쓸 수 있다.
+        p2
+        .then(function(data) {
+            console.log("2번 문제 ajax 성공");
+            console.log(data);
+        })
+        .then(function() {
+            console.log("then 연달아 붙여보기 test");
+        })
+        .then(function() {
+            console.log("then 연달아 붙여보기 test");
+        })
+        .then(function() {
+            console.log("then 연달아 붙여보기 test");
+        })
+        .then(function() {
+            console.log("then 연달아 붙여보기 test");
+        })
+        .then(function() {
+            console.log("then 연달아 붙여보기 test");
+        })
+        .then(function() {
+            console.log("then 연달아 붙여보기 test");
+        })
+        .catch(function() {
+            console.log("2번 문제 ajax 실패");
+        })
+    </script>
+
+    <script>
+        console.log("============ 3번 문제 ============");
+
+        // 3. Promise chaining(Ajax 요청 연달아 2번 하기)
+        // cf) jQuery CDN 사용
+
+        // 첫번째 Ajax 요청
+        let p3 = new Promise(function (resolve, reject) {
+            $.ajax({
+                type: "GET",
+                url: "https://codingapple1.github.io/hello.txt",
+                success: function (data) {
+                    resolve(data);
+                },
+                error: function () {
+                    reject();
+                }
+            })
+        });
+
+        p3
+        .then(function (data) {
+            // 첫번째 then
+            console.log("3-1번 문제 ajax 성공");
+            console.log(data);
+
+            // 두번째 Ajax 요청 & 바로 Promise 값 return
+            // 이게 지저분하면 new Promise() 부분을 함수로 만들어서 빼도 된다.
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    type: "GET",
+                    url: "https://codingapple1.github.io/hello2.txt",
+                    success: function (data) {
+                        resolve(data);
+                    },
+                    error: function () {
+                        reject();
+                    }
+                })
+            });
+        })
+        .then(function (data) {
+            // 두번째 then
+            console.log("3-2번 문제 ajax 성공");
+            console.log(data);
+        })
+        .catch(function() {
+            // 첫번째 & 두번째 Ajax 요청 중 실패하면 알아서 catch로 들어온다.
+            // 첫번째 catch, 두번째 catch 각각 따로 만들 필요가 없다.
+            console.log("3번문제 실패");
+        })
+    </script>
+
+    <script>
+        console.log("============ 개별 연습(Promise 함수로 빼기) ============");
+
+        function ajaxGet(url) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    success: function (data) {
+                        resolve(data);
+                    },
+                    error: function () {
+                        reject();
+                    }
+                })
+            });
+        }
+
+        ajaxGet("https://codingapple1.github.io/hello.txt")
+        .then(function (data) {
+            console.log("개별 연습 문제-1 ajax 성공");
+            console.log(data);
+
+            return ajaxGet("https://codingapple1.github.io/hello2.txt");
+        })
+        .then(function (data) {
+            console.log("개별 연습 문제-2 ajax 성공");
+            console.log(data);
+        })
+        .catch(function () {
+            console.log("개별 연습 문제 ajax 실패");
+        });
+    </script>
+</body>
+</html>
