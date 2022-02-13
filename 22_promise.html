@@ -7,7 +7,8 @@
     <title>Document</title>
 </head>
 <body>
-    <script>
+
+        <!-- <script>
         // Promise는 ajax나 setTimeout 등에서 callback function 대신 사용할 수 있다.
         // callback function 대신 좀 더 가독성을 높일 수 있다.
 
@@ -18,7 +19,7 @@
 
         // Promise 디자인 패턴
         let p1 = new Promise(function(resolve, reject) {   // cf) 관습적으로 (resolve, reject)라고 적는다.
-            // 아래의 function으로 Promise의 성공, 실패 판정을 한다.
+            // 해당 callback function으로 Promise의 성공, 실패 판정을 한다.
             // resolve() : Promise 성공 / reject() : Promise 실패
             // resolve() : then 실행    / reject() : catch 실행
             
@@ -39,7 +40,7 @@
         });
 
         // 일반적인 callback function으로는 성공/실패 case를 분류할 수가 없다. 하지만 Promise는 가능하다.
-        
+
         // p1 : 얘가 위에서 성공, 실패 여부를 받아오는 것이다.
         p1.then(function(result) {              // Promise가 성공일 경우 실행할 코드
                                                 // argument를 전달받을 수 있다.
@@ -51,33 +52,43 @@
             console.log("Promise 실패");
         }).finally(function() {
             console.log("Promise finally");     // 성공, 실패 여부와 관계없이 무조건 실행시킬 코드
-            console.log("==============================================================================");
         })
 
         // cf) then, catch, finally에 각각의 case에 맞춰 실행할 callback function을 넣은 것이다.
 
         console.log("==============================================================================");
-    </script>
+    </script> -->
 
     <script>
+        console.log("==============================================================================");
         // Promise는 위와 같이 허접한 예제에서는 잘 쓰지 않는다.
 
         // Promise는 성공, 실패 판정 기계이다.
         let p2 = new Promise(function(resolve, reject) {
             // 1초후에 성공, 실패를 판정하는 기계를 만들어보자
             setTimeout(function() {
+                console.log("Promise 생성");
+                console.log(p2);
+
                 // 성공
                 resolve();
 
                 // 실패
                 // reject();
-            }, 1000);
+            }, 500);
         })
 
         p2.then(function() {
-            console.log("Promise 성공");
+            console.log("then");
+            console.log("setTimeout Promise 성공");
+            console.log(p2);
         }).catch(function() {
-            console.log("Promise 실패");
+            console.log("catch");
+            console.log("setTimeout Promise 실패");
+            console.log(p2);
+        }).finally(function() {
+            console.log("setTimeout Promise finally");
+            console.log(p2);
         })
     </script>
 </body>
