@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 문법 : Object.create(프로토타입object);
+
+        let parent = { name : 'Kim', age : 50 };
+        let child = Object.create(parent);    // 상속 기능 구현
+
+        console.log(parent);                  // {name: 'Kim', age: 50}
+        console.log(child);                   // {}
+        /*
+            왜 {}가 출력될까?
+            child라는 object에는 아무런 값을 부여한적이 없다.(name, age 등을 직접 정의한 적이 없다.)
+            그저 Object.create(parent)을 통해 child의 prototype을 parent로 정의했을 뿐이다.
+        */
+
+        console.log(parent.name);             // Kim
+        console.log(child.name);              // Kim
+
+        // 자식의 name을 바꿔보자
+        child.name = "Park";
+
+        console.log(child);                   // {name: 'Park'} 출력, child에 name이라는 값을 직접 값을 부여 했으니까
+
+        console.log(parent.name);             // Kim
+        console.log(child.name);              // Park
+
+        parent.name = "Lee";
+
+        console.log(parent.name);             // Lee
+        console.log(child.name);              // Park
+
+        // 자식의 age를 바꿔보자
+        console.log(child.age);               // 50
+        child.age = 20;
+
+        console.log(child);                   // {name: 'Park', age: 20} 출력, child에 age라는 값을 직접 값을 부여 했으니까
+        console.log(parent);                  // {name: 'Lee', age: 50}
+        console.log(child.age);               // 20
+// ================================================================================================================
+        // 손자(자식의 자식)를 만들어보자
+        let littleChild = Object.create(child);
+        console.log(littleChild);             // {}
+        console.log(littleChild.name);        // Park, child의 name 값이 출력됐다.
+        console.log(littleChild.age);         // 20  , child의 age 값이 출력됐다.
+
+        littleChild.hello = function() {
+            console.log("littleChild.hello();");
+        }
+
+        littleChild.hello();                   // littleChild.hello();
+    </script>
+</body>
+</html>
