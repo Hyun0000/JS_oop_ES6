@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // cf) Object.create(프로토타입object)는 constructor가 아니다.
+
+        // constructor 만드는 문법을 알아보자
+        class parent {
+            constructor(name) {
+                this.name = name;
+                // 함수 추가 방법1
+                // 모든 자식이 직접 해당 function을 물려받는다.
+                this.sayHi1 = function() {
+                    console.log("함수 추가 방법1");
+                }
+            }
+
+            // 함수 추가 방법2
+            // 해당 영역에 쓰는 function들은 자식이 물려받지 않는다.
+            // 부모의 prototype(유전자)에만 추가돼있다.
+            sayHi2() {
+                console.log("함수 추가 방법2");
+            }
+
+            sayHi3() {
+                console.log("함수 추가 방법3");
+            }
+        }
+        // 함수가 constructor에 있는 것과 그렇지 않은 것의 차이
+        // 1. constructor에 (O) --> class를 이용해 생성한 자식 object에 해당 function (O)
+        // 2. constructor에 (X) --> class를 이용해 생성한 자식 object에 해당 function (X)
+
+        // class(부모)에 function 추가하는 또 다른 방법
+        parent.prototype.sayHi4 = function() {
+            console.log("함수 추가 방법4");
+        }
+// ============================================================================================================
+        // class를 이용해 자식 생성하는 방법
+        let child = new parent("Park");       // 자식object 생성 완료
+        console.log(child);             // {name: 'Kim', sayHi1: ƒ}, constructor안에 있는 sayHi1만 물려받았다.
+        console.log(parent.prototype);  // {constructor: ƒ, sayHi2: ƒ}
+
+        // 4가지 함수 모두 사용 가능하다.
+        child.sayHi1();
+        child.sayHi2();
+        child.sayHi3();
+        child.sayHi4();
+
+        console.log(child.__proto__);  // {constructor: ƒ, sayHi2: ƒ}
+        // __proto__ : 나의 뿌리를 찾을때 사용, 즉, child의 부모 prototype(부모 유전자)가 출력된다.
+        // child.__proto__ = 부모.prototype
+
+        // cf)
+        // __proto__와 동일한 기능의 function이 있다.
+        // getPrototypeOf() : argument로 담은 object의 prototype(부모 유전자)을 출력해준다.
+        console.log(Object.getPrototypeOf(child));
+    </script>
+</body>
+</html>
