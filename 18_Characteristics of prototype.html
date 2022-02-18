@@ -14,6 +14,7 @@
         }
 
         Student.prototype.gender = 'woman';
+        Student.prototype.weight = 45;
 
         var s1 = new Student("Kim");
 
@@ -22,7 +23,7 @@
         var arr = [1,2,3];
         var obj = {name : "jung"};
 
-        console.log(Student.prototype);     // {gender: 'wendy', constructor: ƒ}
+        console.log(Student.prototype);     // {gender: 'woman', weight: 45, constructor: ƒ}
         console.log(arr.prototype);         // undefined
         console.log(obj.prototype);         // undefined
 
