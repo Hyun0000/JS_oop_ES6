@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        console.log("============= 1번 문제 =============");
+
+        // 1. 직접 class 구조 만들기
+        class animal{
+            constructor(type, color) {
+                this.type = type;
+                this.color = color;
+            }
+
+            func() {
+                console.log(1);
+            }
+        };
+
+        var dog1 = new animal("말티즈", "white");
+        var dog2 = new animal("진돗개", "black");
+        console.log(dog1);
+        console.log(dog2);
+    </script>
+
+    <script>
+        console.log("============= 2번 문제 =============");
+
+        // 고양이 관련 object 만들기
+        class catFac extends animal {
+            constructor(type, color, age) {
+                super(type, color);
+                this.age = age;
+            }
+        }
+
+        var cat1 = new catFac("코숏", "white", 5);
+        var cat2 = new catFac("러시안블루", "blue", 2);
+        console.log(cat1);
+        console.log(cat2);
+    </script>
+
+    <script>
+        console.log("============= 3번 문제 =============");
+        
+    </script>
+
+    <script>
+        console.log("============= 4번 문제 =============");
+
+        // get/set을 이용한 게임 캐릭터 object 생성
+        class Unit{
+            constructor(attack, hp) {
+                this.attack = 5;
+                this.hp = 100;
+            }
+            get battlePoint() {
+                return (this.attack + this.hp);
+            }
+            set heal(plusHp) {
+                this.hp = this.hp + plusHp;
+            }
+        }
+
+        var character1 = new Unit();
+        console.log(character1);
+        console.log(character1.battlePoint);
+
+        character1.heal = 50;
+        console.log(character1.battlePoint);
+    </script>
+
+    <script>
+        console.log("============= 5번 문제 =============");
+        // 배열 번호 좀더 까리한 방법 생각해보기
+        let oddArrIndex = 0;
+        let evenArrIndex = 0;
+
+        var data = {
+            odd: [],
+            even: [],
+            insertNums : function(...param) {
+                for (let i = 0; i < param.length; i++) {
+                    if(param[i] % 2 === 0) {
+                        this.even[evenArrIndex] = param[i];
+                        evenArrIndex++;
+                    } else {
+                        this.odd[oddArrIndex] = param[i];
+                        oddArrIndex++;
+                    }
+                }
+            },
+            getAllArr : function() {
+                let resultArr = [...this.odd, ...this.even].sort();
+                return resultArr;
+            }
+        }
+
+        data.insertNums(1,2,3,4,5);
+        console.log(data.getAllArr());
+    </script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        console.log("-------------------- 1번 문제 --------------------");
+        // 1. 직접 class 구조 만들기
+        // var 강아지1 = { type : '말티즈', color : 'white' };
+        // var 강아지2 = { type : '진돗개', color : 'brown' };
+        // 이런 object 들을 뽑아낼 수 있는 class를 만들어보자
+        class MakeDog {
+            constructor(type, color) {
+                this.type = type;
+                this.color = color;
+            }
+
+            agePlusOne() {
+                if(this instanceof MakeCat) {
+                    console.log(this);
+                    this.age++;
+                } else {
+                    console.log(this);
+                    console.log("강아지 class로 부터 생성된 instance입니다.");
+                }
+            }
+        }
+
+        let dog1 = new MakeDog('말티즈', 'white');
+        let dog2 = new MakeDog('진돗개', 'brown');
+
+        console.log(dog1);
+        console.log(dog2);
+    </script>
+// ================================================================================================================
+    <script>
+        console.log("-------------------- 2번 문제 --------------------");
+        
+        // 2. 고양이 object 만들기
+        // extends를 사용하여 MakeDog class를 상속받은 후 고양이 object를 찍어내는 class를 만들어보자
+        // var 고양이1 = { type : '코숏', color : 'white', age : 5 };
+        // var 고양이2 = { type : '러시안블루', color : 'brown', age : 2 };
+        class MakeCat extends MakeDog {
+            constructor(type, color, age) {
+                super(type, color);  // super()는 MakeDog class의 constructor()를 그대로 복붙
+                this.age = age;
+            }
+        }
+
+        let cat1 = new MakeCat('코숏', 'white', 5);
+        let cat2 = new MakeCat('러시안블루', 'brown', 2);
+
+        console.log(cat1);
+        console.log(cat2);
+    </script>
+// ================================================================================================================
+    <script>
+        console.log("-------------------- 3번 문제 --------------------");
+        // 고양이와 강아지 object에 기능 추가
+        // 모든 고양이와 강아지 object들은 .한살먹기() 라는 함수를 사용할 수 있다. 
+        // 단, 아래와 같은 조건이 있다.
+        // (1) 한살먹기 함수를 강아지 class로부터 생성된 오브젝트가 사용하면 콘솔창에 에러를 출력
+        // (2) 한살먹기 함수를 고양이 class로 부터 생성된 오브젝트가 사용하면 현재 가지고있는 age 속성에 1을 더해주는 기능을 실행
+        cat1.agePlusOne();
+        dog1.agePlusOne();
+
+        console.log(cat1.age);
+        console.log(dog1.age);
+    </script>
+// ================================================================================================================
+    <script>
+        console.log("-------------------- 4번 문제 --------------------");
+        // get / set --> 간단한 게임 기능을 가진 object를 뽑는 class를 만들어보자
+        // 다음 조건에 따라 class를 만들어라(class 이름은 Unit)
+
+        // (1) 모든 Unit의 인스턴스는 공격력, 체력 속성이 있으며 기본 공격력은 5, 기본 체력은 100으로 설정돼야한다.
+        // (2) 모든 Unit의 인스턴스는 전투력을 측정해주는 battlePoint라는 getter가 있다.
+        // console.log( 인스턴스.battlePoint ) 이렇게 사용하면 현재 공격력과 체력을 더한 값을 콘솔창에 출력
+        // (3) 모든 Unit의 인스턴스는 heal이라는 setter가 있다.
+        // 인스턴스.heal = 50 이렇게 사용하면 체력 속성이 50 증가해야한다. 
+        class Unit {
+            constructor() {
+                this.attack = 5;
+                this.hp = 100;
+            }
+
+            get battlePoint() {
+                return this.attack + this.hp;
+            }
+
+            set heal(healPoint) {
+                this.hp += 50;
+            }
+        }
+
+        let character = new Unit();
+
+        console.log(character);                 // {attack: 5, hp: 100}
+        console.log(character.battlePoint);     // 105
+        character.heal = 50;                    
+        console.log(character);                 // {attack: 5, hp: 150}
+    </script>
+// ================================================================================================================
+    <script>
+        console.log("-------------------- 5 번 문제 --------------------");
+        // get / set
+        // (1) data 오브젝트안에 setter 역할 함수를 하나 만들어라
+        // setter 함수에 1,2,3,4 이렇게 아무 자연수나 파라미터로 입력하면 홀수는 odd, 짝수는 even 이라는 속성에 array 형태로 저장
+        // (2) data 오브젝트안에 getter 역할 함수를 하나 만들어라
+        // getter 함수를 사용하면 odd, even에 저장된 모든 데이터들이 숫자순으로 정렬되어 출력
+
+        var data = {
+            odd: [],
+            even: [],
+
+            arrayDivide(...numbers) {
+                for (let i = 0; i < numbers.length; i++) {
+                    if(numbers[i] % 2 != 0) {
+                        // 홀수
+                        this.odd[(this.odd.length > 0) ? (this.odd.length) : 0] = numbers[i];
+                    } else {
+                        // 짝수
+                        this.even[(this.even.length > 0) ? (this.even.length) : 0] = numbers[i];
+                    }
+                }
+            },
+
+            get allArr() {
+                let resultArr = [...this.odd, ...this.even].sort((a, b) => a - b);
+                return resultArr;
+            }
+        }
+
+        data.arrayDivide(1,2,3,4,5);
+        console.log(data.odd);
+        console.log(data.even);
+        console.log(data.allArr);
+    </script>
+
+    <script>
+        console.log("-------------------- 5번 문제 다른 풀이 --------------------");
+        // 아래의 변수를 따로 만드는게 싫어서 위의 풀이에서 삼항연산자를 사용한 것이다.
+        let oddArrIndex = 0;
+        let evenArrIndex = 0;
+
+        var data = {
+            odd: [],
+            even: [],
+            insertNums : function(...param) {
+                for (let i = 0; i < param.length; i++) {
+                    if(param[i] % 2 === 0) {
+                        this.even[evenArrIndex] = param[i];
+                        evenArrIndex++;
+                    } else {
+                        this.odd[oddArrIndex] = param[i];
+                        oddArrIndex++;
+                    }
+                }
+            },
+            getAllArr : function() {
+                let resultArr = [...this.odd, ...this.even].sort();
+                return resultArr;
+            }
+        }
+
+        data.insertNums(1,2,3,4,5);
+        console.log(data.getAllArr());
+    </script>
+</body>
+</html>
