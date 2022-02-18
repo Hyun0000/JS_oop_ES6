@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class grandfather {
+            constructor(name, name2) {
+                this.성 = "Kim";
+                this.이름 = name;
+                this.이름2 = name2;
+            }
+
+            // grandfather의 prototype(유전자)에 sayHi function이 추가됐다.
+            sayHello() {
+                console.log("안녕");
+            }
+
+            sayHi() {
+                console.log("안녕 저는 할아버지에요");
+            }
+        }
+
+        let g1 = new grandfather("wendy", "joy");
+        console.log(g1);    // {성: 'Kim', 이름: 'wendy', 이름2: 'joy'}
+        g1.sayHi();
+// ====================================================================================================
+        // grandfather의 속성들을 그대로 물려받은 father class를 만들어보자
+        // class를 extends 해서 class를 새로 만들었다.
+        class father extends grandfather {
+            constructor(name, name2) {
+                // 해당 부분에 super()가 없으면 아래와 같은 오류가 발생한다.
+                // Uncaught ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+                // cf) derived : 유래된, 파생된
+
+                // extends를 이용해 만든 class는 constructor 부분에서 this를 함부로 사용할 수 없다.
+                // this를 쓰기전에 super()를 먼저 사용해야한다.
+                // super : extends한 부모 class의 constructor(){}와 동일한 의미이다.
+                // (물려받은 class의 constructor라는 뜻)
+
+                // 엄밀히 말해 super()를 사용하면 father class의 constructor는 아래와 같은 구성을 가지게 된다.
+                /*
+                    this.성 = "Kim";
+                    this.이름 = name;
+                    this.이름2 = name2;
+                    this.age = 50;
+                */
+                super(name, name2);     // grandfather class의 constructor가 (name, name2)을 parameter로 받기에
+                                        // super(name, name2)에서도 동일하게 (name, name2)을 parameter로 설정한다.
+                this.age = 50;
+            }
+
+            // 여기에도 똑같이 sayHi라는 이름의 함수를 만들고 싶다.
+            sayHi() {
+                console.log("안녕 저는 아버지에요");
+                super.sayHi();
+                // class 간의 함수 상속이다.
+                // 부모 prototype에 있는 sayHi 함수를 실행시켜라
+                // constructor 밖에서의 super는 부모 prototype(부모 유전자)를 의미한다.
+                // __proto__와 유사하다고 생각하면 된다.
+            }
+        }
+
+        let f1 = new father("irene", "yeri");
+        console.log(f1);    // {성: 'Kim', 이름: 'irene', 이름2: 'yeri', age: 50}
+
+        // extends로 상속한 자식도 부모 class에 있는 함수를 사용할 수 있다.
+        f1.sayHello();
+        // father class의 부모 prototype(부모 유전자)에 sayHello가 있기 때문에 사용할 수 있는 것이다.
+        // super()랑은 상관없다.
+
+        // grandfather class와 father class 모두 sayHi라는 이름의 function을 가지고 있다.
+        // 이때 무엇이 출력될까?
+        f1.sayHi();         // 안녕 저는 아버지에요
+        // JS의 data 찾기 알고리즘으로 인해 가장 가까이 있는 prototype의 값부터 찾는 것이다.
+        // 즉, father class의 sayHi 함수가 실행된다.
+
+        // cf)
+        // 일부러 아무값도 넣지 않았을 때
+        let f2 = new father();
+        console.log(f2);    // {성: 'Kim', 이름: undefined, 이름2: undefined, age: 50}
+    </script>
+</body>
+</html>
