@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var arr = [2,3,4];
+        // 위 array에 있는 data를 전부 변수에 담아보자, 쉽게
+        var [a,b,c] = [2,3,4];
+        console.log(a);
+        console.log(b);
+        console.log(c);
+        
+        // cf)
+        // var [a,b,c] = arr; --> 이렇게 해도 동일값 출력
+
+        console.log("==============================================================");
+    </script>
+// ========================================================================================
+    <script>
+        // array destructuring 할때 몇개를 빼먹는다면?
+        var arr2 = [2,3];
+        var [d,e,f = 999] = [2];
+        // (f = 999) --> data가 안 들어올 경우의 default 변수값 지정
+
+        console.log(d); // 2
+        console.log(e); // undefined
+        console.log(f); // 999
+
+        console.log("==============================================================");
+    </script>
+// ========================================================================================
+    <script>
+        // object에서도 destructuring 문법 사용 가능
+        var obj = {name : "Kim", age : 30}
+
+        // object안의 데이터("Kim", 30)들을 뽑아 변수에 담아보자
+        // cf) name과 age는 데이터가 아니라 '데이터의 이름'이다.
+
+        // 모양만 맞춰주면 된다.
+        var {name, age = 31} = {name : "Kim", age : 30};
+        // (age = 31) --> age 변수의 기본값 지정 가능
+        console.log(name);
+        console.log(age);
+        /*
+            array와 다르게 objcet에서는 위치를 보장해주지 않는다.
+            즉, var {name, age} = {name : "Kim", age : 30} 이렇게 썼다고 해서
+            (name = "Kim", age = 30)이라는 값으로 무조건 매칭되는게 아니라는 것이다.
+            따라서 원하는 변수에 원하는 값을 매칭하고 싶으면 '변수명을 key 명과 동일하게 사용해야한다.'
+            즉, 위치를 맞추는게 아니라 '이름'을 맞춘다고 생각하고 destructuring 문법을 사용하면 된다.
+        */
+
+        // cf)
+        // var {name, age} = obj; --> 이렇게 해도 동일값 출력
+
+        console.log("==============================================================");
+    </script>
+// ========================================================================================
+    <script>
+        // object의 key값과 동일한 이름을 사용하기 싫을때(변수의 이름 바꾸기)
+
+        var obj2 = {name : "Park", age2 : 29}
+        // 나는 (name : "Park")이라는 값을 변수에 저장해서 사용하고 싶지만
+        // 변수명을 name으로 하기 싫을 때 아래와 같이 변수명을 지정하면 된다.
+
+        var {name : apple = "Choi", age2 = 999} = {name : "Park", age2 : 29};
+        // (name : apple = "Choi") --> apple 변수에 default 값 지정
+        console.log(apple);
+        console.log(age2);
+
+        console.log("==============================================================");
+    </script>
+// ========================================================================================
+    <script>
+        // 반대 : 변수들을 object에 집어넣고 싶은 경우
+
+        var name3 = "Kim";
+        var age3 = 30;
+        // 위의 변수들을 object에 집어넣고 싶으면 어떻게 해야할까?
+        var obj3 = {name3, age3};
+        // {name3, age3}가 {name3 : name3, age3 : age3}의 일종의 약자라고 생각하면 된다.
+        // object의 key & value 명이 동일하면 위와 같이 줄여쓸 수 있다.
+        // React, vue 같은 곳에서 쓰인다.
+        console.log(obj3);
+
+        console.log("==============================================================");
+    </script>
+// ========================================================================================
+    <script>
+        // 함수 parameter 변수에서도 destructuring 문법 사용 가능
+
+        // 아래 object의 데이터를 argument로 만들고 싶다.(obj4의 name과 age를 argument로 집어넣고 싶다.)
+        var obj4 = {name4 : "Jung", age4 : 33};
+
+        function func1({name4, age4}) { // name4와 age4를 parameter로 받는다는 의미
+            console.log(name4);
+            console.log(age4);
+        }
+        // 함수의 parameter도 변수를 만드는 것과 동일하다고 생각하면 된다.
+        // {name4, age4}는 2개의 변수를 생성한 것과 동일하다.
+        // func1({name4 : "Jung", age4 : 33}) : 그 변수에 각각 "Jung"과 33을 담는 것이다.
+        
+        func1(obj4);
+        func1({name4 : "Jung", age4 : 33});
+
+        console.log("==============================================================");
+    </script>
+// ========================================================================================
+    <script>
+        // array도 동일하게 적용가능
+        function func2([x, y]) {
+            console.log(x);
+            console.log(y);
+        }
+
+        func2([1,2]);
+    </script>
+// ========================================================================================
+    <script>
+        console.log("====================== 연습문제1 ======================");
+
+        // a와 address와 number라는 변수는 각각 무슨 값을 가지고 있을까? 
+        var [number, address] = [ 30, 'seoul' ];
+        console.log(number);
+        console.log(address);
+
+        console.log("===============================================");
+
+        var {address : a , number = 20 } = { address, number };
+        console.log(number);    // 30
+        console.log(address);   // 'seoul'
+        console.log(a);         // 'seoul'
+    </script>
+// ========================================================================================
+    <script>
+        console.log("====================== 연습문제2 ======================");
+
+        // Object에서 데이터를 뽑아서 변수를 만들자
+        let bodyInfo = {
+            body: {
+                height: 190,
+                weight: 70
+            },
+            size: ["상의 Large", "바지 30인치"]
+        };
+
+        let {
+            body: {
+                height,
+                weight
+            },
+            size: [상의, 하의]
+        } = bodyInfo;
+
+        console.log(height);
+        console.log(weight);
+        console.log(상의);
+        console.log(하의);
+    </script>
+</body>
+</html>
