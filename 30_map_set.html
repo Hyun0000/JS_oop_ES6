@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Map 자료형
+
+        // Map 자료형 만드는 방법
+        let person = new Map();
+
+        // Map에 자료 넣기
+        person.set("name", 'Kim');
+        person.set("age", 20);
+        console.log(person);
+
+        // Map 자료 꺼내는 방법
+        console.log(person.get("name"));
+        console.log(person.get("age"));
+
+        // Map 자료 몇개인지 아는 방법
+        console.log(person.size);
+
+        console.log("----------------------- Map에서 age 속성 삭제 -----------------------");
+
+        // Map 자료 삭제하는 방법
+        person.delete("age");
+        console.log(person);
+        console.log(person.size);
+
+        console.log("----------------------- Map 자료형 반복문 돌리기 -----------------------");
+
+        /*************** for of ***************/
+        console.log("--------------- key ---------------");
+        // Map에서 key 추출
+        for (const key of person.keys()) {
+            console.log(key);
+            console.log(person.get(key));
+        }
+
+        console.log("--------------- value ---------------");
+        // Map에서 value 추출
+        for (const value of person.values()) {
+            console.log(value);
+        }
+
+        console.log("--------------- forEach1 ---------------");
+        /*************** forEach ***************/
+        // forEach에서 (value, key) 이 순서대로 value 값과 key 값이 들어온다.
+        person.forEach((value, key) => {
+            console.log(`${key} : ${value}`);
+        })
+
+        console.log("--------------- forEach2 ---------------");
+        person.forEach((value) => {
+            console.log(`${value}`);
+        })
+
+        console.log("--------------- forEach3 ---------------");
+        person.forEach((value, key) => {
+            console.log(`${key}`);
+        })
+
+        console.log("----------------------- Map 생성시 자료 직접 집어넣기 -----------------------");
+        let map1 = new Map([
+            ["age", 9999],
+            ["name", "choi"]
+        ]);
+
+        console.log(map1.get("age"));
+        console.log(map1.get("name"));
+        console.log(map1.size);
+        console.log(map1);
+    </script>
+
+    <script>
+        console.log("--------------- Set 자료형 ---------------");
+        // Set 자료형
+        let checkBook = new Set([ 'john' , 'tom', 'andy', 'tom' ]);
+
+        console.log(checkBook);
+        // {'john', 'tom', 'andy'}
+
+        console.log("--------------- Set 자료 추가 ---------------");
+        // Set 자료 추가
+        checkBook.add("sally");
+
+        console.log(checkBook);
+        // {'john', 'tom', 'andy', 'sally'}
+        // '마지막'에 'sally'가 추가됐다.
+
+        console.log("--------------- Set 자료 삭제 ---------------");
+        // Set 자료 삭제
+        checkBook.delete("john");
+        console.log(checkBook);
+
+        // Set 자료있는지 확인
+        console.log(checkBook.has("tom"));
+
+        // Set 자료 몇개인지 아는 방법
+        // 중복값은 다 제거한 후 size를 계산한다.
+        console.log(checkBook.size);
+
+        console.log("----------------------- Set 자료형 반복문 돌리기 -----------------------");
+
+        for (const value of checkBook) {
+            console.log(value);
+        }
+
+        console.log("--------------- forEach ---------------");
+
+        checkBook.forEach((e) => {
+            console.log(e);
+        })
+    </script>
+
+    <script>
+        console.log("--------------- Set을 이용해 Array에 있는 중복데이터 제거 ---------------");
+        var nameList = ['john', 'tom', 'andy', 'tom'];      // 일반 array, 현재 'tom'이 중복된다.
+
+        var nameList2 = new Set(nameList);                  // Array를 Set으로 바꾸기
+        console.log(nameList2);
+
+        nameList = [...nameList2]                           // Set을 다시 Array로 바꾸기
+        console.log(nameList);
+    </script>
+</body>
+</html>
