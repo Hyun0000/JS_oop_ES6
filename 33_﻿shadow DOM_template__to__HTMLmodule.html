@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="range">
+===============================================================================================================================================
+    <!-- shadow DOM 만드는 방법 -->
+<!--
+    <div class="mordor"></div>
+
+    <script>
+        // shadowRoot 공간 만들기
+        document.querySelector('.mordor').attachShadow({mode : 'open'});
+
+        // 위에서 만든 shadowRoot에 원하는 html 내용 작성
+        document.querySelector('.mordor').shadowRoot.innerHTML = '<p>심연에서왔도다</p>';
+    </script>
+-->
+===============================================================================================================================================
+    <!-- Web Component의 단점 : 스타일 오염 -->
+<!--
+    <script>
+        class customClass extends HTMLElement {
+            connectedCallback() {
+                this.innerHTML =   `<label>이름을 입력하쇼</label><input>
+                                    <style> label { color : red } </style>`
+            }
+        }
+
+            customElements.define("custom-input", customClass);
+    </script>
+
+    <custom-input></custom-input>
+    <label>컴포넌트와 별개인 얘도 빨간색으로 된다.</label>
+-->
+===============================================================================================================================================
+    <!-- shadow DOM을 이용해 스타일 오염 방지 -->
+<!--
+    <script>
+        class customClass2 extends HTMLElement {
+            connectedCallback() {
+                this.attachShadow({mode : 'open'});
+                this.shadowRoot.innerHTML =    `<label>이름을 입력하쇼</label>
+                                                <input>
+                                                <style> label { color : red } </style>
+                                                `
+            }
+        }
+
+            customElements.define("custom-input2", customClass2);
+    </script>
+
+    <custom-input2></custom-input2>
+    <label>이제 스타일 적용 안됨</label>
+-->
+===============================================================================================================================================
+    <!-- html 임시보관함 <template> 태그 -->
+
+    <template id="template1">
+        <label>이메일을 입력하쇼</label><input>
+        <style>label { color : red }</style>
+    </template>
+
+    <script>
+        class customClass3 extends HTMLElement {
+            connectedCallback() {
+                this.attachShadow({ mode: 'open' });
+                this.shadowRoot.append(template1.content.cloneNode(true));
+            }
+        }
+
+        customElements.define("custom-input3", customClass3);
+    </script>
+
+    <custom-input3></custom-input3>
+
+===============================================================================================================================================
+    <!-- shadow DOM에 eventListener 부착 -->
+<!--
+    <template id="template1">
+        <label>이메일을 입력하쇼</label><input>
+        <style>label { color : red }</style>
+    </template>
+
+    <script>
+        class customClass4 extends HTMLElement {
+            connectedCallback() {
+                this.attachShadow({ mode: 'open' });
+                this.shadowRoot.append(template1.content.cloneNode(true));
+
+                // 이 부분을 또 함수로 따로 뺄 수도 있다.
+                let el = this.shadowRoot.querySelector('label');
+                el.addEventListener('click', function () {
+                    console.log('클릭함');
+                })
+            }
+        }
+        customElements.define("custom-input4", customClass4);
+    </script>
+
+    <custom-input4></custom-input4>
+-->
+</body>
+</html>
