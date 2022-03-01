@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        console.log("----------------------------- for in -----------------------------");
+
+        // 특징 1. enumerable한 것만 출력한다.
+        let obj = { name : 'Kim', age : 30};
+
+        // cf)
+        // object의 key들만 뽑는 방법(배열 형태로 반환된다.)
+        console.log(Object.keys(obj));
+        // ['name', 'age']
+// ============================================================================================================================================
+        // (오브젝트.key)가 안되는 이유
+        for (const i in obj) {
+            console.log(i);
+            console.log(obj[i]);
+
+            // console.log(obj.i);  ==>  undefined 출력
+            // i는 단순 변수명이기에 obj.i(= obj.변수명)를 해버리면 현재 (let obj = { name : 'Kim', age : 30 })에
+            // i와 관련된 데이터가 없기 때문에 당연히 undefined가 출력되는 것이다.
+
+            // cf)
+            // 아래와 같이 하면 console.log(obj.i)가 출력될 것이다.
+            // let obj = { name : 'Kim', age : 30, i : 9999 };
+        }
+// ============================================================ for in 반복문의 특징 ============================================================
+        console.log("-------------------- for in 반복문의 특징 --------------------");
+
+        console.log("-------------------- 1. enumerable 한 데이터만 출력 --------------------");
+        // 1. enumerable 한 데이터만 출력
+        console.log(Object.getOwnPropertyDescriptor(obj, 'name'));
+        // obj.name의 숨겨진 정보를 출력해준다.
+        // {value: 'Kim', writable: true, enumerable: true, configurable: true}
+        console.log(Object.getOwnPropertyDescriptor(obj, 'name').enumerable);
+        // true
+
+        console.log("-------------------- 2. 부모의 prototype에 저장된 것도 출력해준다. --------------------");
+        // 2. 부모의 prototype에 저장된 것도 출력해준다.
+
+        class Parent {
+
+        }
+
+        Parent.prototype.name = "Park";
+
+        let child = new Parent();
+
+        for (const i in child) {
+            console.log(child[i]);
+        }
+
+        console.log("-------------------- for in 단점 보완 --------------------");
+        for (const i in child) {
+            if(child.hasOwnProperty(i)) {
+                console.log(child[i]);
+            } else {
+                console.log("부모가 가지고 있음");
+            }
+        }
+    </script>
+
+    <script>
+        console.log("----------------------------- for of -----------------------------");
+        let arr = [2,3,4,5];
+
+        for (const element of arr) {
+            console.log(element);
+        }
+
+        for (const element of "apple") {
+            console.log(element);
+        }
+
+        console.log("----------------------------- [Symbol.iterator]() -----------------------------");
+        // 배열에 있나 체크
+        console.log(arr[Symbol.iterator]());
+
+        // 문자열에 있나 체크
+        console.log("apple"[Symbol.iterator]());
+
+        // Map에 있나 체크
+        let map1 = new Map();
+        console.log(map1[Symbol.iterator]());
+    </script>
+
+    <script>
+        console.log("----------------------------- 연습문제1 -----------------------------");
+        // Q1. for of 반복문을 이용해 2단 ~ 9단까지의 구구단을 콘솔창에 출력
+        let numbers = [1,2,3,4,5,6,7,8,9];
+        for (const num1 of numbers) {
+            for (const num2 of numbers) {
+                if(num1 > 1) {
+                    console.log(`${num1} x ${num2} = ${num1*num2}`);
+
+                    if(num2 === 9) {
+                        console.log(`--------------${num1}단 끝--------------`);
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script>
+        console.log("----------------------------- 연습문제2 -----------------------------");
+        let products = [
+            {
+                name1: 'chair',
+                price1: 7000,
+            },
+            {
+                name2: 'sofa',
+                price: 5000,
+            },
+            {
+                name1: 'desk',
+                price3: 9000,
+            },
+        ];
+
+        for (let obj of products) {
+            for (let key in obj) {
+                if(Number.isNaN(parseInt(key[key.length - 1]))) {
+                    // 끝자리가 문자
+                    // 이 부분은 없어도 되는데 그냥 key 이름 확인차 작성
+                    console.log(key);
+                } else {
+                    // 끝자리가 숫자
+
+                    // 끝자리 숫자를 제거한 새로운 key 값 뽑아내기
+                    let newKey = key.substring(0, key.length - 1);
+
+                    // 새로운 key에 기존 value(= 끝자리가 숫자인 key의 value) 부여
+                    obj[newKey] = obj[key];
+
+                    // 객체에서 끝자리가 숫자인 key 속성 삭제
+                    delete obj[key];
+                }
+            }
+        }
+
+        console.log(products);
+
+        console.log("----------------------------- 연습문제2 - 강사 -----------------------------");
+        let products2 = [
+            {
+                name1: 'chair',
+                price1: 7000,
+            },
+            {
+                name2: 'sofa',
+                price: 5000,
+            },
+            {
+                name1: 'desk',
+                price3: 9000,
+            },
+        ];
+
+        let newValue;
+        let newKey;
+
+        for (let item of products2) {
+            for (let key in item) {
+                // 마지막 글자를 숫자로 변환했을 때 NaN이 안나오면(= 숫자면)
+                if (isNaN(parseInt(key.slice(-1))) == false) {
+                    newValue = item[key];
+                    newKey = key.slice(0, -1);  // 맨 뒷 문자 제거 방법
+                    item[newKey] = newValue;
+                    delete item[key]; // 원래있던 key 제거
+                }
+            }
+        }
+
+        console.log(products2);
+    </script>
+</body>
+</html>
