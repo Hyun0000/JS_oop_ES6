@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 1. 기본 component 생성
+
+        class customClass extends HTMLElement {
+            connectedCallback() {
+                // backtick 사용(반드시 backtick을 사용할 필요는 없다.)
+                // custom tag가 HTML에 장착될 때 실행할 코드를 적는 곳(축약할 HTML 내용을 담는다.)
+                // 여기서 this는 custom tag이다.(this = <custom-input>)
+                this.innerHTML =   `<label>이름을 입력해라</label>
+                                    <input>
+                                    <br>
+                                    `;
+
+                // 이런식으로 해도 된다.
+                // 이게 더 효율적이다. = html 생성 속도가 빨라진다.
+                let labelEle = document.createElement('label');
+                labelEle.innerText = "document.createElement로 만든 <label> 태그";
+                this.appendChild(labelEle);
+            }
+        }
+
+        customElements.define("custom-input", customClass);
+        // customElements.define("축약할 단어(Component 명)", 축약할 HTML 내용을 담은 class);
+        // 반드시 class 형태로 집어넣어야 한다.
+    </script>
+    <custom-input></custom-input>
+===============================================================================================================================================
+    <script>
+        // 2. attribute를 추가하면 각각 다른 내용을 보여줄 수 있다.(parameter 문법 구현)
+        class customClass2 extends HTMLElement {
+
+            connectedCallback() {
+                // name attribute에 있는 것을 가져와라
+                let name = this.getAttribute('name');
+
+                // backtick 사용
+                this.innerHTML =   `<label>${name}을 입력하거라</label>
+                                    <input>
+                                    <br>
+                                    `;
+            }
+        }
+
+        customElements.define("custom-input2", customClass2);
+    </script>
+
+        <custom-input2 name="이메일"></custom-input2>
+        <custom-input2 name="비번"></custom-input2>
+===============================================================================================================================================
+    <script>
+        // 3. attribute가 변경될 때 특정 코드 실행 가능(attribute 변경 감지 기능)
+        class customClass3 extends HTMLElement {
+
+            connectedCallback() {
+                let name = this.getAttribute('name');
+
+                // backtick 사용
+                this.innerHTML =   `<label>${name} 입력해!</label>
+                                    <input>
+                                    <br>
+                                    `;
+            }
+
+            static get observedAttributes() {
+                // '감시'할 attribute들을 array 형태로 적는다.
+                // array안에 있는 attribute들이 변경되는 순간 밑에 있는 attributeChangedCallback() 함수가 실행된다.
+                return ['name'];
+            }
+
+            attributeChangedCallback() {
+                // attribute 변경시 실행할 코드 작성
+                console.log(this.getAttribute("name"));
+                console.log("observedAttributes 함수로 인해 name 속성이 변경된걸 알 수 있다.");
+            }
+        }
+
+        customElements.define("custom-input3", customClass3);
+    </script>
+
+    <custom-input3 name="통장비번"></custom-input3>
+    <custom-input3 name="인감위치"></custom-input3>
+</body>
+</html>
