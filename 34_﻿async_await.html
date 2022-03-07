@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<!--
+    <script>
+        // 1. async
+
+        // 언제 let p1 = new Promise() 이렇게 만들고 있나, 간단하게 async 키워드를 이용하자
+        // async 키워드를 function 앞에 붙이면 해당 function은 Promise의 역할을 할 수 있다.
+        // 해당 함수가 실행되고 나면 항상 Promise object가 남는다.
+        // (run() 하고 실행하면 Promise object가 남는다는 것이다.)
+
+        /*
+            async의 단점
+            - 성공만 판정할 수 있다는 것이다.
+            - let p1 = new Promise() 를 이용했을 때 처럼 (성공 case / 실패 case)를 구분할 수 없다는 것이다.
+        */
+        async function run() {
+            let result = (1 + 2);
+            return Promise.reject("123");    // argument도 전달할 수 있다.
+            // async는 실패를 판단할 수 없지만 Promise.reject() 를 return 하면 강제로 실패 판정을 내릴 수 있다.
+            // cf) Promise.reject()를 써도 Promise.reject("123")처럼 argument를 catch 부분에 전달할 수 있다.
+        }
+
+        run().then(function(result) {   // argument도 전달받을 수 있다.
+            console.log("성공");
+            console.log(result);
+        }).catch(function(result) {     // argument도 전달받을 수 있다.
+            console.log("실패");
+            console.log(result);
+        })
+
+    </script>
+-->
+// ================================================================================================================================================
+    <script>
+        // 2. async & await
+        // await는 async가 붙은 function 안에서만 사용할 수 있다.
+        
+        // function 안에서 promise 쓰기 : function 안에서 promise를 디자인할 수 있다.
+    /*
+        async function run2() {
+            let p1 = new Promise(function(resolve, reject) {
+                let result2 = 1 + 1;
+                resolve();
+            })
+
+            p1.then(() => {
+                console.log("성공");
+                console.log(this);
+            }).catch(() => {
+                console.log("실패");
+                console.log(this);
+            })
+        }
+
+        // run2 함수도 실행후에는 Promise object를 남기기에
+        // 여기서 또 then, catch를 사용할 수 있다.
+        run2().then(() => {
+            console.log("성공2");
+        })
+    */
+// =============================================================================================
+        // 위에까지가 await를 사용하기 전 방식이다.
+        // await는 then 대신 사용가능하다.
+        // await : Promise가 해결될때까지 기다리라는 의미
+        async function run2() {
+            let p1 = new Promise(function(resolve, reject) {
+                let result2 = 1 + 1;
+                resolve(result2);
+                // reject(result2);
+            })
+
+            // let result3 = await p1;
+            // 브라우저가 위에서부터 JS 코드를 쭉 해석하다가
+            // (await p1)을 만나면 Promise가 해결될 때까지 기다리는 것이다.
+            // 성공이든 실패든 결과가 나올때까지 기다리는 것이다.
+            // 성공 판정이 나오면 그 결과를 (let result3)에 넣어준다.
+            // (Promise 연산 결과는 변수에 저장가능)
+
+            // then을 사용했을 때보다 훨씬 더 코드가 간단하다.
+            // 단, await를 사용할 때 Promise 실패 판정시 error가 나고 기능 작동이(코드가) 멈춰버린다.
+            // 이런 일을 방지하기 위해 try-catch 구문을 사용한다.
+
+            try {
+                let result3 = await p1;
+                
+                console.log("Promise 성공");
+                console.log(result3);
+            } catch (error) {
+                console.error(error);
+                console.log("Promise 실패");
+            }
+
+            // return Promise.reject();
+            // 이걸 쓰면 run2() 실행시 실패 판정이 난다.
+        }
+
+        run2()
+        .then(() => {
+            console.log("성공2");
+        }).catch(() => {
+            console.log("실패2");
+        })
+
+        /*
+            - (let result3 = await p1)은 아래 코드의 간략화 버전에 불과하다. 어렵게 생각할 필요없다.
+
+            p1.then(() => {
+                console.log("성공");
+                console.log(this);
+            })
+
+            - await을 반드시 쓸 필요는 없다. 기존 (then/catch)가 편하면 그냥 그걸 쓰면 된다.
+            - 다만 코드는 좀 더러워진다.
+        */
+    </script>
+// ================================================================================================================================================
+    <button id="btn">Promise 성공 버튼</button>
+    <button id="btn2">Promise 실패 버튼</button>
+
+    <script>
+        // <button>을 누르면 성공 판정하는 Promise 만들기
+
+        // 1.
+        // let p3 = new Promise(function(resolve, reject) {
+        //     document.getElementById("btn").onclick = function() {
+        //         resolve();
+        //         successBtn();
+        //     }
+        // })
+
+        // async function successBtn() {
+        //     try {
+        //         let resultBtn = await p3;
+        //         console.log("성공요");
+        //     } catch (error) {
+        //         console.log("실패요");
+        //     }
+        // }
+
+        // 2.
+        document.getElementById("btn").addEventListener("click", (e)=>{
+            successBtn2(e.target.id);
+        })
+
+        document.getElementById("btn2").addEventListener("click", (e)=>{
+            successBtn2(e.target.id);
+        })
+
+        async function successBtn2(idValue) {
+            let p4 = new Promise(function(resolve, reject) {
+                if(idValue === "btn") {
+                    resolve();
+                } else {
+                    reject();
+                }
+            })
+
+            try {
+                let p4Result = await p4;
+                console.log("성공");
+            } catch (e) {
+                console.log("실패");
+            }
+        }
+    </script>
+
+// ================================================================================================================================================
+    // 강사 답안
+    <button id="test">버튼</button>
+
+    <script>
+        var 프로미스 = new Promise(function (성공, 실패) {
+            document.getElementById('test').addEventListener('click', function () {
+                성공();
+            });
+            // (var 결과 = await 프로미스)로 인해 아래의 부분이 빈칸 취급 당하지 않는다.
+            // document.getElementById('test').addEventListener('click', function () {
+            //     성공();
+            // });
+        })
+
+        async function 버튼누르기() {
+            var 결과 = await 프로미스;  // 프로미스 성공까지 기달
+            console.log('성공했으요');
+        }
+
+        버튼누르기();
+    </script>
+    
+</body>
+</html>
