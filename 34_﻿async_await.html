@@ -181,10 +181,13 @@
             document.getElementById('test').addEventListener('click', function () {
                 성공();
             });
-            // (var 결과 = await 프로미스)로 인해 아래의 부분이 빈칸 취급 당하지 않는다.
-            // document.getElementById('test').addEventListener('click', function () {
-            //     성공();
-            // });
+            /*
+                - (var 결과 = await 프로미스)로 인해 아래의 부분이 빈칸 취급 당하지 않는다.
+                
+                document.getElementById('test').addEventListener('click', function () {
+                    성공();
+                });
+            */
         })
 
         async function 버튼누르기() {
